@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using KeymapGenerator.Infrastructure;
@@ -42,6 +44,8 @@ namespace KeymapGenerator
             foreach (var layerName in _keymapGridController.GetLayerNames()) {
                 CbItems.Add(new ComboBoxItem { Content = layerName });
             }
+
+            CbKeymapType.ItemsSource = Enum.GetValues(typeof(KeymapType)).Cast<KeymapType>();
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
