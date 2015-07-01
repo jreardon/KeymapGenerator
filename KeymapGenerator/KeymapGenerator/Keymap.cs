@@ -3,7 +3,7 @@
     public class Keymap
     {
         public KeymapType Type { get; set; }
-        public string Value { get; set; }
+        public string Action { get; set; }
         public string Text { get; set; }
         public int Row { get; set; }
         public int Col { get; set; }

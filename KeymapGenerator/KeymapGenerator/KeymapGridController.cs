@@ -115,7 +115,7 @@ namespace KeymapGenerator
                     var keymapDialog = new KeymapDialog();
                     if (keymapDialog.ShowDialog() == true) {
                         keymap.Text = keymapDialog.KeymapText;
-                        keymap.Value = keymapDialog.AssociatedLayerText;
+                        keymap.Action = keymapDialog.AssociatedLayerText;
                         keymap.Type = keymapDialog.KeymapTypeSelected;
                         keymapButton.Content = keymap.Text;
                     }
