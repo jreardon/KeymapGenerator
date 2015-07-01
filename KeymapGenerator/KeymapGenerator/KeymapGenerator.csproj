@@ -65,6 +65,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Infrastructure\KeymapFileReader.cs" />
     <Compile Include="Keymap.cs" />
     <Compile Include="KeymapDialog.xaml.cs">
       <DependentUpon>KeymapDialog.xaml</DependentUpon>
