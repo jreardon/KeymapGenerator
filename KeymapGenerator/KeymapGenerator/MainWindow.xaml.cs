@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using KeymapGenerator.Infrastructure;
 
 namespace KeymapGenerator
 {
@@ -26,8 +27,13 @@ namespace KeymapGenerator
             InitializeComponent();
             DataContext = this;
 
+            var keymapFileReader = new KeymapFileReader();
+            var keymapLayers = keymapFileReader.Read(@"C:\dev\tmk_keyboard\keyboard\planck\extended_keymaps\extended_keymap_default.c");
+
             _keymapGridController = new KeymapGridController();
-            _keymapGridController.AddLayer(4, 12, "Main");
+            //_keymapGridController.AddLayer(4, 12, "Main");
+            foreach (var layer in keymapLayers) _keymapGridController.AddLayer(layer);
+
 
             CbItems = new ObservableCollection<ComboBoxItem>();
             var cbItem = new ComboBoxItem { Content = "<--Select-->" };
