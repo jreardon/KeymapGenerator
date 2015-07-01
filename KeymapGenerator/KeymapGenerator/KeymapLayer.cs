@@ -4,6 +4,7 @@ namespace KeymapGenerator
 {
     public class KeymapLayer
     {
+        public int LayerNumber { get; set; }
         public string LayerName { get; set; }
         public int NumberRows { get; set; }
         public int NumberCols { get; set; }
