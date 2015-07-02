@@ -67,13 +67,13 @@
     </Compile>
     <Compile Include="Infrastructure\KeymapFileReader.cs" />
     <Compile Include="Infrastructure\KeymapFileWriter.cs" />
-    <Compile Include="Keymap.cs" />
+    <Compile Include="Domain\Keymap.cs" />
     <Compile Include="KeymapDialog.xaml.cs">
       <DependentUpon>KeymapDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="KeymapGridController.cs" />
-    <Compile Include="KeymapLayer.cs" />
-    <Compile Include="KeymapType.cs" />
+    <Compile Include="Domain\KeymapLayer.cs" />
+    <Compile Include="Domain\KeymapType.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

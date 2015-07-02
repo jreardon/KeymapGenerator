@@ -1,4 +1,4 @@
-﻿namespace KeymapGenerator
+﻿namespace KeymapGenerator.Domain
 {
     public class Keymap
     {

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using KeymapGenerator.Domain;
 using KeymapGenerator.Infrastructure;
 
 namespace KeymapGenerator
