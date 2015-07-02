@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using KeymapGenerator.Models;
 
-namespace KeymapGenerator.ViewModels
+namespace KeymapGenerator.Models
 {
     public class KeymapGridController
     {
@@ -31,7 +30,7 @@ namespace KeymapGenerator.ViewModels
                 LayerName = name,
                 KeymapGrid = keymapGrid,
                 Buttons = buttons,
-                Keymaps = GetKeymapsArray(numRows, numCols)
+                Keymaps = GetNewKeymapsArray(numRows, numCols)
             });
         }
 
@@ -52,7 +51,7 @@ namespace KeymapGenerator.ViewModels
             KeymapLayers.Add(keymapLayer);
         }
 
-        private Keymap[,] GetKeymapsArray(int numRows, int numCols)
+        private static Keymap[,] GetNewKeymapsArray(int numRows, int numCols)
         {
             var keymaps = new Keymap[numRows, numCols];
 
@@ -106,7 +105,7 @@ namespace KeymapGenerator.ViewModels
 
         private Action<object, RoutedEventArgs> KeymapButton_Click()
         {
-            return (object sender, RoutedEventArgs e) => {
+            return (sender, e) => {
                 var keymapButton = (Button)sender;
                 var row = Grid.GetRow(keymapButton);
                 var col = Grid.GetColumn(keymapButton);
@@ -114,13 +113,18 @@ namespace KeymapGenerator.ViewModels
 
                 try {
                     var keymapDialog = new KeymapDialog();
-                    if (keymapDialog.ShowDialog() == true) {
+                    if (keymapDialog.ShowDialog() == true) 
+                    {
                         keymap.Text = keymapDialog.KeymapText;
                         keymap.Action = keymapDialog.AssociatedLayerText;
                         keymap.Type = keymapDialog.KeymapTypeSelected;
                         keymapButton.Content = keymap.Text;
                     }
-                } catch (Exception) { }
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
             };
         }
 

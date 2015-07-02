@@ -71,9 +71,10 @@
     <Compile Include="KeymapDialog.xaml.cs">
       <DependentUpon>KeymapDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\KeymapGridController.cs" />
+    <Compile Include="Models\KeymapGridController.cs" />
     <Compile Include="Models\KeymapLayer.cs" />
     <Compile Include="DataTypes\KeymapType.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
