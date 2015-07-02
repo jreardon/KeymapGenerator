@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using KeymapGenerator.Domain;
-using KeymapGenerator.Infrastructure;
+using KeymapGenerator.DataTypes;
+using KeymapGenerator.Utilities;
+using KeymapGenerator.ViewModels;
 
-namespace KeymapGenerator
+namespace KeymapGenerator.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

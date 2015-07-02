@@ -57,7 +57,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -65,16 +65,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Infrastructure\KeymapFileReader.cs" />
-    <Compile Include="Infrastructure\KeymapFileWriter.cs" />
-    <Compile Include="Domain\Keymap.cs" />
+    <Compile Include="Utilities\KeymapFileReader.cs" />
+    <Compile Include="Utilities\KeymapFileWriter.cs" />
+    <Compile Include="Models\Keymap.cs" />
     <Compile Include="KeymapDialog.xaml.cs">
       <DependentUpon>KeymapDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="KeymapGridController.cs" />
-    <Compile Include="Domain\KeymapLayer.cs" />
-    <Compile Include="Domain\KeymapType.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="ViewModels\KeymapGridController.cs" />
+    <Compile Include="Models\KeymapLayer.cs" />
+    <Compile Include="DataTypes\KeymapType.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -106,6 +106,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

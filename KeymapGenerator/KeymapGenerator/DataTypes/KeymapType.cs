@@ -1,4 +1,4 @@
-﻿namespace KeymapGenerator.Domain
+﻿namespace KeymapGenerator.DataTypes
 {
     public enum KeymapType
     {

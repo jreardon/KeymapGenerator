@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using KeymapGenerator.Domain;
+using KeymapGenerator.Models;
 
-namespace KeymapGenerator
+namespace KeymapGenerator.ViewModels
 {
     public class KeymapGridController
     {

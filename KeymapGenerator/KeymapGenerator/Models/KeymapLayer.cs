@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace KeymapGenerator.Domain
+namespace KeymapGenerator.Models
 {
     public class KeymapLayer
     {

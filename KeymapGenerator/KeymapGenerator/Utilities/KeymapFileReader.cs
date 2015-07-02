@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using KeymapGenerator.Domain;
+using KeymapGenerator.Models;
 
-namespace KeymapGenerator.Infrastructure
+namespace KeymapGenerator.Utilities
 {
     public class KeymapFileReader
     {

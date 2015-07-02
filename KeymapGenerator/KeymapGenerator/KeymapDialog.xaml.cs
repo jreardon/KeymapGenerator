@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using KeymapGenerator.Domain;
+using KeymapGenerator.DataTypes;
 
 namespace KeymapGenerator
 {

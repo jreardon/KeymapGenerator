@@ -1,4 +1,6 @@
-﻿namespace KeymapGenerator.Domain
+﻿using KeymapGenerator.DataTypes;
+
+namespace KeymapGenerator.Models
 {
     public class Keymap
     {

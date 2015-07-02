@@ -1,4 +1,4 @@
-﻿namespace KeymapGenerator.Infrastructure
+﻿namespace KeymapGenerator.Utilities
 {
     public class KeymapFileWriter
     {
