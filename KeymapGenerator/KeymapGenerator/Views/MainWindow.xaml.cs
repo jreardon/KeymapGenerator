@@ -30,5 +30,10 @@ namespace KeymapGenerator.Views
             _viewModel.AddLayer();
             TxtAddLayer.Clear();
         }
+
+        private void TxtKeymapText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _viewModel.UpdateSelectedButton();
+        }
     }
 }

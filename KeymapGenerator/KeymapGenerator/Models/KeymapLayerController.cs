@@ -1,31 +1,26 @@
-﻿using System.Windows.Controls;
-
-namespace KeymapGenerator.Models
+﻿namespace KeymapGenerator.Models
 {
     public class KeymapLayerController
     {
         public KeymapLayer GetNewLayer(int numRows, int numCols, string name)
         {
-            Button[,] buttons;
-            var keymapGrid = KeymapGrid.GetNewKeymapGrid(numRows, numCols, out buttons);
+            var keymaps = GetNewKeymapsArray(numRows, numCols);
+            var keymapGrid = KeymapGrid.GetNewKeymapGrid(numRows, numCols, keymaps);
             return new KeymapLayer(numRows, numCols)
             {
                 LayerName = name,
                 KeymapGrid = keymapGrid,
-                Buttons = buttons,
                 Keymaps = GetNewKeymapsArray(numRows, numCols)
             };
         }
 
         public void PopulateKeymapLayer(KeymapLayer keymapLayer)
         {
-            Button[,] buttons;
-            keymapLayer.KeymapGrid = KeymapGrid.GetNewKeymapGrid(keymapLayer.NumberRows, keymapLayer.NumberCols, out buttons);
-            keymapLayer.Buttons = buttons;
+            keymapLayer.KeymapGrid = KeymapGrid.GetNewKeymapGrid(keymapLayer.NumberRows, keymapLayer.NumberCols, keymapLayer.Keymaps);
 
             for (var i = 0; i < keymapLayer.NumberRows; i++) {
                 for (var j = 0; j < keymapLayer.NumberCols; j++) {
-                    keymapLayer.Buttons[i, j].Content = keymapLayer.Keymaps[i, j].Text;
+                    keymapLayer.Keymaps[i, j].Button.Content = keymapLayer.Keymaps[i, j].Text;
                 }
             }
         }

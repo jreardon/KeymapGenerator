@@ -1,14 +1,11 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace KeymapGenerator.Models
 {
     public class KeymapGrid
     {
-        public static Grid GetNewKeymapGrid(int numRows, int numCols, out Button[,] buttons)
+        public static Grid GetNewKeymapGrid(int numRows, int numCols, Keymap[,] keymaps)
         {
-            buttons = new Button[numRows, numCols];
             var keymapGrid = new Grid();
             keymapGrid.Children.Clear();
 
@@ -32,10 +29,10 @@ namespace KeymapGenerator.Models
                 for (var j = 0; j < numCols; j++)
                 {
                     var button = new Button();
-                    buttons[i, j] = button;
-                    Grid.SetRow(buttons[i, j], i);
-                    Grid.SetColumn(buttons[i, j], j);
-                    keymapGrid.Children.Add(buttons[i, j]);
+                    keymaps[i, j].Button = button;
+                    Grid.SetRow(button, i);
+                    Grid.SetColumn(button, j);
+                    keymapGrid.Children.Add(button);
                 }
             }
 

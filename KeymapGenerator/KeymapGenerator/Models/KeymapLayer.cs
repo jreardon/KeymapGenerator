@@ -16,7 +16,6 @@ namespace KeymapGenerator.Models
         public int NumberRows { get; set; }
         public int NumberCols { get; set; }
         public Keymap[,] Keymaps { get; set; }
-        public Button[,] Buttons { get; set; }
         public Grid KeymapGrid { get; set; }
 
         public KeymapLayer(int numRows, int numCols)

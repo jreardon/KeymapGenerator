@@ -45,6 +45,7 @@ namespace KeymapGenerator.ViewModels
         private readonly KeymapLayerController _keymapLayerController;
         private readonly List<KeymapLayer> _keymapLayers;
         private KeymapLayer _currentKeymapLayer;
+        private Keymap _selectedKeymap;
 
         public ViewModel()
         {
@@ -73,12 +74,12 @@ namespace KeymapGenerator.ViewModels
 
             if (_currentKeymapLayer != null)
             {
-                var buttons = _currentKeymapLayer.Buttons;
-                for (var i = 0; i < buttons.GetLength(0); i++)
+                var keymaps = _currentKeymapLayer.Keymaps;
+                for (var i = 0; i < keymaps.GetLength(0); i++)
                 {
-                    for (var j = 0; j < buttons.GetLength(1); j++)
+                    for (var j = 0; j < keymaps.GetLength(1); j++)
                     {
-                        buttons[i, j].Click += new RoutedEventHandler(KeymapButton_Click());
+                        keymaps[i, j].Button.Click += new RoutedEventHandler(KeymapButton_Click());
                     }
                 }
             }
@@ -104,17 +105,24 @@ namespace KeymapGenerator.ViewModels
             AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
         }
 
+        public void UpdateSelectedButton()
+        {
+            _selectedKeymap.Text = KeymapText;
+
+            //ToDo: Fill out with more keymap properties
+        }
+
         private Action<object, RoutedEventArgs> KeymapButton_Click()
         {
             return (sender, e) =>
             {
-                var keymapButton = (Button) sender;
-                var row = Grid.GetRow(keymapButton);
-                var col = Grid.GetColumn(keymapButton);
-                var keymap = _currentKeymapLayer.Keymaps[row, col];
+                var button = (Button) sender;
+                var row = Grid.GetRow(button);
+                var col = Grid.GetColumn(button);
+                _selectedKeymap = _currentKeymapLayer.Keymaps[row, col];
 
-                KeymapText = keymap.Text;
-                SelectedKaymapType = keymap.Type;
+                KeymapText = _selectedKeymap.Text;
+                SelectedKaymapType = _selectedKeymap.Type;
             };
         }
 
