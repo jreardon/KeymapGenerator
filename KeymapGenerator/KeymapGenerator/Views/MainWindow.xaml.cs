@@ -1,84 +1,33 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using KeymapGenerator.DataTypes;
-using KeymapGenerator.Utilities;
 using KeymapGenerator.ViewModels;
 
 namespace KeymapGenerator.Views
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        public ObservableCollection<ComboBoxItem> CbItems { get; set; }
-        public ComboBoxItem SelectedCbItem { get; set; }
-        public ComboBox SelectedKaymapType { get; set; }
-        public string KeymapText { get; set; }
-
-        private string _addLayerName;
-        public string AddLayerName
-        {
-            get { return _addLayerName; }
-            set { _addLayerName = value.Trim(); }
-        }
-
-        private readonly KeymapGridController _keymapGridController;
+        private readonly ViewModel _viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = this;
-
-            var keymapFileReader = new KeymapFileReader();
-            var keymapLayers = keymapFileReader.Read(@"C:\dev\tmk_keyboard\keyboard\planck\extended_keymaps\extended_keymap_default.c");
-
-            _keymapGridController = new KeymapGridController();
-            foreach (var layer in keymapLayers) _keymapGridController.AddLayer(layer);
-
-
-            CbItems = new ObservableCollection<ComboBoxItem>();
-            var cbItem = new ComboBoxItem { Content = "<--Select-->" };
-            SelectedCbItem = cbItem;
-            CbItems.Add(cbItem);
-            foreach (var layerName in _keymapGridController.GetLayerNames()) {
-                CbItems.Add(new ComboBoxItem { Content = layerName });
-            }
-
-            CbKeymapType.ItemsSource = Enum.GetValues(typeof(KeymapType)).Cast<KeymapType>();
+            _viewModel = new ViewModel();
+            DataContext = _viewModel;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var keymapLayer =
-                _keymapGridController.GetLayer(SelectedCbItem.Content.ToString());
+            var keymapLayer = _viewModel.GetKeymapLayer();
 
             KeymapContainer.Children.Clear();
             if (keymapLayer == null) return;
 
-            _keymapGridController.ChangeKeymapLayer(keymapLayer);
             KeymapContainer.Children.Add(keymapLayer.KeymapGrid);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddLayer_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_addLayerName)) {
-                MessageBox.Show("Invalid input");
-                return;
-            }
-
-            var existingLayerName = _keymapGridController.GetLayer(_addLayerName);
-            if (existingLayerName != null) {
-                MessageBox.Show(string.Format("A layer with the name '{0}' already exists.", _addLayerName));
-                return;
-            }
-
-            _keymapGridController.AddLayer(4, 12, _addLayerName);
-            CbItems.Add(new ComboBoxItem { Content = _addLayerName });
-
+            _viewModel.AddLayer();
             TxtAddLayer.Clear();
         }
     }
