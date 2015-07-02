@@ -65,6 +65,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\KeymapLayerController.cs" />
     <Compile Include="Utilities\KeymapFileReader.cs" />
     <Compile Include="Utilities\KeymapFileWriter.cs" />
     <Compile Include="Models\Keymap.cs" />
