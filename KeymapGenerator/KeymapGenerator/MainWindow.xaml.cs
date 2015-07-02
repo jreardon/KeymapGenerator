@@ -14,6 +14,8 @@ namespace KeymapGenerator
     {
         public ObservableCollection<ComboBoxItem> CbItems { get; set; }
         public ComboBoxItem SelectedCbItem { get; set; }
+        public ComboBox SelectedKaymapType { get; set; }
+        public string KeymapText { get; set; }
 
         private string _addLayerName;
         public string AddLayerName
@@ -33,7 +35,6 @@ namespace KeymapGenerator
             var keymapLayers = keymapFileReader.Read(@"C:\dev\tmk_keyboard\keyboard\planck\extended_keymaps\extended_keymap_default.c");
 
             _keymapGridController = new KeymapGridController();
-            //_keymapGridController.AddLayer(4, 12, "Main");
             foreach (var layer in keymapLayers) _keymapGridController.AddLayer(layer);
 
 
