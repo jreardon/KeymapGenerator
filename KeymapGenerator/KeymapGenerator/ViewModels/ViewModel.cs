@@ -1,22 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using KeymapGenerator.Annotations;
 using KeymapGenerator.DataTypes;
 using KeymapGenerator.Models;
 using KeymapGenerator.Utilities;
 
 namespace KeymapGenerator.ViewModels
 {
-    public class ViewModel
+    public class ViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<ComboBoxItem> AvailableLayers { get; set; }
         public ComboBoxItem SelectedLayer { get; set; }
         public List<KeymapType> KeymapTypes { get; set; }
         public KeymapType SelectedKaymapType { get; set; }
-        public string KeymapText { get; set; }
+
+        private string _keymapText;
+
+        public string KeymapText
+        {
+            get {return _keymapText; }
+            set
+            {
+                if (value != _keymapText)
+                {
+                    _keymapText = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private string _addLayerName;
         public string AddLayerName
@@ -53,6 +70,19 @@ namespace KeymapGenerator.ViewModels
         public KeymapLayer GetKeymapLayer()
         {
             _currentKeymapLayer = _keymapLayers.FirstOrDefault(kl => kl.LayerName == SelectedLayer.Content.ToString());
+
+            if (_currentKeymapLayer != null)
+            {
+                var buttons = _currentKeymapLayer.Buttons;
+                for (var i = 0; i < buttons.GetLength(0); i++)
+                {
+                    for (var j = 0; j < buttons.GetLength(1); j++)
+                    {
+                        buttons[i, j].Click += new RoutedEventHandler(KeymapButton_Click());
+                    }
+                }
+            }
+
             return _currentKeymapLayer;
         }
 
@@ -69,11 +99,6 @@ namespace KeymapGenerator.ViewModels
             }
 
             var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, _addLayerName);
-            for (var i = 0; i < keymapLayer.Buttons.GetLength(0); i++) {
-                for (var j = 0; j < keymapLayer.Buttons.GetLength(1); j++) {
-                    keymapLayer.Buttons[i, j].Click += new RoutedEventHandler(KeymapButton_Click());
-                }
-            }
             _keymapLayers.Add(keymapLayer);
 
             AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
@@ -91,6 +116,15 @@ namespace KeymapGenerator.ViewModels
                 KeymapText = keymap.Text;
                 SelectedKaymapType = keymap.Type;
             };
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
