@@ -25,14 +25,14 @@ namespace KeymapGenerator.ViewModels
             set { _addLayerName = value.Trim(); }
         }
 
-        private readonly KeymapGridController _keymapGridController;
+        private readonly KeymapGrid _keymapGridController;
 
         public ViewModel()
         {
             var keymapFileReader = new KeymapFileReader();
             var keymapLayers = keymapFileReader.Read(@"C:\dev\tmk_keyboard\keyboard\planck\extended_keymaps\extended_keymap_default.c");
 
-            _keymapGridController = new KeymapGridController();
+            _keymapGridController = new KeymapGrid();
             foreach (var layer in keymapLayers) _keymapGridController.AddLayer(layer);
 
             AvailableLayers = new ObservableCollection<ComboBoxItem>();

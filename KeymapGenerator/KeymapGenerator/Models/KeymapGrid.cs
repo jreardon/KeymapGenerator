@@ -6,12 +6,12 @@ using System.Windows.Controls;
 
 namespace KeymapGenerator.Models
 {
-    public class KeymapGridController
+    public class KeymapGrid
     {
         private KeymapLayer _currentKeymapLayer;
         public List<KeymapLayer> KeymapLayers { get; set; }
 
-        public KeymapGridController()
+        public KeymapGrid()
         {
             KeymapLayers = new List<KeymapLayer>();
         }
