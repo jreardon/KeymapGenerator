@@ -53,10 +53,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="KeymapDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,9 +66,6 @@
     <Compile Include="Utilities\KeymapFileReader.cs" />
     <Compile Include="Utilities\KeymapFileWriter.cs" />
     <Compile Include="Models\Keymap.cs" />
-    <Compile Include="KeymapDialog.xaml.cs">
-      <DependentUpon>KeymapDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\KeymapGrid.cs" />
     <Compile Include="Models\KeymapLayer.cs" />
     <Compile Include="DataTypes\KeymapType.cs" />
