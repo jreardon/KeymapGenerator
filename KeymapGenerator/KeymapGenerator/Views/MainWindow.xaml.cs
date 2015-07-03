@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using KeymapGenerator.ViewModels;
+using Microsoft.Win32;
 
 namespace KeymapGenerator.Views
 {
@@ -33,12 +34,22 @@ namespace KeymapGenerator.Views
 
         private void TxtKeymapText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _viewModel.UpdateSelectedButton();
+            _viewModel.UpdatedKeymapText();
         }
 
         private void CbKeymapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.UpdateSelectedButton();
+            _viewModel.UpdateKeymapType();
+        }
+
+        private void BtnImportKeymap_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+
+            var dialogSuccessful = dialog.ShowDialog();
+
+            if (dialogSuccessful == true)
+                _viewModel.ImportKeymapFile(dialog.FileName);
         }
     }
 }

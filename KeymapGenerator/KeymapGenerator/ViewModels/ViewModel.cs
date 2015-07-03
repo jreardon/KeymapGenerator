@@ -60,18 +60,12 @@ namespace KeymapGenerator.ViewModels
         public ViewModel()
         {
             _keymapLayers = new List<KeymapLayer>();
-            ImportKeymapFile(@"C:\dev\tmk_keyboard\keyboard\planck\extended_keymaps\extended_keymap_default.c");
-
             _keymapLayerController = new KeymapLayerController();
-            foreach (var layer in _keymapLayers) _keymapLayerController.PopulateKeymapLayer(layer);
-
             AvailableLayers = new ObservableCollection<ComboBoxItem>();
+
             var cbItem = new ComboBoxItem { Content = "<--Select-->" };
             SelectedLayer = cbItem;
             AvailableLayers.Add(cbItem);
-            foreach (var layerName in _keymapLayers.Select(kl => kl.LayerName)) {
-                AvailableLayers.Add(new ComboBoxItem { Content = layerName });
-            }
 
             var keymapTypes = Enum.GetNames(typeof(KeymapType)).ToList();
             KeymapTypes = keymapTypes;
@@ -81,6 +75,11 @@ namespace KeymapGenerator.ViewModels
         {
             var keymapFileReader = new KeymapFileReader();
             _keymapLayers = keymapFileReader.Read(file);
+
+            foreach (var layer in _keymapLayers) {
+                AvailableLayers.Add(new ComboBoxItem { Content = layer.LayerName });
+                _keymapLayerController.PopulateKeymapLayer(layer);
+            }
         }
 
         public KeymapLayer GetKeymapLayer()
@@ -120,17 +119,18 @@ namespace KeymapGenerator.ViewModels
             AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
         }
 
-        public void UpdateSelectedButton()
+        public void UpdateKeymapType()
         {
-            _selectedKeymap.Text = KeymapText;
-
             if (SelectedKeymapType != null) // skip this from occurring on startup
             {
                 var selectedKeymapType = (KeymapType) Enum.Parse(typeof (KeymapType), SelectedKeymapType);
                 if (_selectedKeymap.Type != selectedKeymapType) _selectedKeymap.Type = selectedKeymapType;
             }
+        }
 
-            //ToDo: Fill out with more keymap properties
+        public void UpdatedKeymapText()
+        {
+            _selectedKeymap.Text = KeymapText;
         }
 
         private Action<object, RoutedEventArgs> KeymapButton_Click()
@@ -142,7 +142,7 @@ namespace KeymapGenerator.ViewModels
                 var col = Grid.GetColumn(button);
                 _selectedKeymap = _currentKeymapLayer.Keymaps[row, col];
 
-                SelectedKeymapType = null; // reset between key changes
+                _selectedKeymapType = null; // reset between key changes
                 KeymapText = _selectedKeymap.Text;
                 var selectType = _selectedKeymap.Type.ToString();
                 SelectedKeymapType = selectType;

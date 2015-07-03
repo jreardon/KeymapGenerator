@@ -21,5 +21,6 @@
         <Label Content="Type:" HorizontalAlignment="Left" Margin="726,228,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="CbKeymapType" HorizontalAlignment="Left" Margin="792,228,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding KeymapTypes}" SelectedItem="{Binding SelectedKeymapType, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbKeymapType_SelectionChanged"/>
         <TextBox x:Name="TxtKeymapText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="792,181,0,0" Text="{Binding KeymapText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TxtKeymapText_TextChanged" />
+        <Button x:Name="BtnImportKeymap" Content="Import Keymap File" HorizontalAlignment="Left" VerticalAlignment="Top" Width="114" Margin="770,452,0,0" Click="BtnImportKeymap_Click"/>
     </Grid>
 </Window>
