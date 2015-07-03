@@ -17,16 +17,15 @@ namespace KeymapGenerator.ViewModels
     {
         public ObservableCollection<ComboBoxItem> AvailableLayers { get; set; }
         public ComboBoxItem SelectedLayer { get; set; }
-        public List<KeymapType> KeymapTypes { get; set; }
+        public List<string> KeymapTypes { get; set; }
 
-        private ComboBoxItem _selectedKeymapType;
-
-        public ComboBoxItem SelectedKaymapType
+        private string _selectedKeymapType;
+        public string SelectedKeymapType
         {
             get { return _selectedKeymapType; }
             set
             {
-                if (Equals(value, _selectedKeymapType)) return;
+                if (value == _selectedKeymapType) return;
 
                 _selectedKeymapType = value;
                 OnPropertyChanged();
@@ -34,7 +33,6 @@ namespace KeymapGenerator.ViewModels
         }
 
         private string _keymapText;
-
         public string KeymapText
         {
             get {return _keymapText; }
@@ -75,7 +73,7 @@ namespace KeymapGenerator.ViewModels
                 AvailableLayers.Add(new ComboBoxItem { Content = layerName });
             }
 
-            var keymapTypes = Enum.GetValues(typeof(KeymapType)).Cast<KeymapType>().ToList();
+            var keymapTypes = Enum.GetNames(typeof(KeymapType)).ToList();
             KeymapTypes = keymapTypes;
         }
 
@@ -126,6 +124,12 @@ namespace KeymapGenerator.ViewModels
         {
             _selectedKeymap.Text = KeymapText;
 
+            if (SelectedKeymapType != null) // skip this from occurring on startup
+            {
+                var selectedKeymapType = (KeymapType) Enum.Parse(typeof (KeymapType), SelectedKeymapType);
+                if (_selectedKeymap.Type != selectedKeymapType) _selectedKeymap.Type = selectedKeymapType;
+            }
+
             //ToDo: Fill out with more keymap properties
         }
 
@@ -138,9 +142,10 @@ namespace KeymapGenerator.ViewModels
                 var col = Grid.GetColumn(button);
                 _selectedKeymap = _currentKeymapLayer.Keymaps[row, col];
 
+                SelectedKeymapType = null; // reset between key changes
                 KeymapText = _selectedKeymap.Text;
-                var selectedKeymapType = new ComboBoxItem {Content = _selectedKeymap.Type.ToString()};
-                SelectedKaymapType = selectedKeymapType;
+                var selectType = _selectedKeymap.Type.ToString();
+                SelectedKeymapType = selectType;
             };
         }
 

@@ -35,5 +35,10 @@ namespace KeymapGenerator.Views
         {
             _viewModel.UpdateSelectedButton();
         }
+
+        private void CbKeymapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _viewModel.UpdateSelectedButton();
+        }
     }
 }
