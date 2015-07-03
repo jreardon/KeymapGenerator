@@ -18,7 +18,20 @@ namespace KeymapGenerator.ViewModels
         public ObservableCollection<ComboBoxItem> AvailableLayers { get; set; }
         public ComboBoxItem SelectedLayer { get; set; }
         public List<KeymapType> KeymapTypes { get; set; }
-        public KeymapType SelectedKaymapType { get; set; }
+
+        private ComboBoxItem _selectedKeymapType;
+
+        public ComboBoxItem SelectedKaymapType
+        {
+            get { return _selectedKeymapType; }
+            set
+            {
+                if (Equals(value, _selectedKeymapType)) return;
+
+                _selectedKeymapType = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _keymapText;
 
@@ -27,11 +40,10 @@ namespace KeymapGenerator.ViewModels
             get {return _keymapText; }
             set
             {
-                if (value != _keymapText)
-                {
-                    _keymapText = value;
-                    OnPropertyChanged();
-                }
+                if (value == _keymapText) return;
+
+                _keymapText = value;
+                OnPropertyChanged();
             }
         }
 
@@ -43,15 +55,14 @@ namespace KeymapGenerator.ViewModels
         }
 
         private readonly KeymapLayerController _keymapLayerController;
-        private readonly List<KeymapLayer> _keymapLayers;
+        private List<KeymapLayer> _keymapLayers;
         private KeymapLayer _currentKeymapLayer;
         private Keymap _selectedKeymap;
 
         public ViewModel()
         {
             _keymapLayers = new List<KeymapLayer>();
-            var keymapFileReader = new KeymapFileReader();
-            _keymapLayers = keymapFileReader.Read(@"C:\dev\tmk_keyboard\keyboard\planck\extended_keymaps\extended_keymap_default.c");
+            ImportKeymapFile(@"C:\dev\tmk_keyboard\keyboard\planck\extended_keymaps\extended_keymap_default.c");
 
             _keymapLayerController = new KeymapLayerController();
             foreach (var layer in _keymapLayers) _keymapLayerController.PopulateKeymapLayer(layer);
@@ -66,6 +77,12 @@ namespace KeymapGenerator.ViewModels
 
             var keymapTypes = Enum.GetValues(typeof(KeymapType)).Cast<KeymapType>().ToList();
             KeymapTypes = keymapTypes;
+        }
+
+        public void ImportKeymapFile(string file)
+        {
+            var keymapFileReader = new KeymapFileReader();
+            _keymapLayers = keymapFileReader.Read(file);
         }
 
         public KeymapLayer GetKeymapLayer()
@@ -122,7 +139,8 @@ namespace KeymapGenerator.ViewModels
                 _selectedKeymap = _currentKeymapLayer.Keymaps[row, col];
 
                 KeymapText = _selectedKeymap.Text;
-                SelectedKaymapType = _selectedKeymap.Type;
+                var selectedKeymapType = new ComboBoxItem {Content = _selectedKeymap.Type.ToString()};
+                SelectedKaymapType = selectedKeymapType;
             };
         }
 

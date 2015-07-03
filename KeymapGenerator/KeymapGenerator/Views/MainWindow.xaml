@@ -19,7 +19,7 @@
         <Label Content="Keymap" VerticalAlignment="Top" Margin="771,115,22.2,0" Width="154" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
         <Label Content="Text:" HorizontalAlignment="Left" Margin="729,181,0,0" VerticalAlignment="Top"/>
         <Label Content="Type:" HorizontalAlignment="Left" Margin="726,228,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="CbKeymapType" HorizontalAlignment="Left" Margin="792,228,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding KeymapTypes}" SelectedItem="{Binding SelectedKeymapType}"/>
+        <ComboBox x:Name="CbKeymapType" HorizontalAlignment="Left" Margin="792,228,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding KeymapTypes}" SelectedItem="{Binding SelectedKeymapType, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBox x:Name="TxtKeymapText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="792,181,0,0" Text="{Binding KeymapText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TxtKeymapText_TextChanged" />
     </Grid>
 </Window>
