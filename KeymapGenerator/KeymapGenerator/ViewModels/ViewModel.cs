@@ -121,7 +121,8 @@ namespace KeymapGenerator.ViewModels
 
         public void UpdateKeymapType()
         {
-            if (SelectedKeymapType != null) // skip this from occurring on startup
+            // prevent this from occurring on startup
+            if (SelectedKeymapType != null) 
             {
                 var selectedKeymapType = (KeymapType) Enum.Parse(typeof (KeymapType), SelectedKeymapType);
                 if (_selectedKeymap.Type != selectedKeymapType) _selectedKeymap.Type = selectedKeymapType;

@@ -81,8 +81,7 @@ namespace KeymapGenerator.Utilities
                     {
                         Row = rowNum,
                         Col = colNum,
-                        Text = row[colNum].Trim(), 
-                        Action = row[colNum].Trim()
+                        Text = row[colNum].Trim()
                     };
                 }
             }
