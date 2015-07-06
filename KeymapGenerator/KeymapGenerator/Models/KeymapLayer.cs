@@ -10,7 +10,7 @@ namespace KeymapGenerator.Models
 
         public string LayerName
         {
-            get { return _layerName ?? LayerNumber.ToString(); }
+            get { return string.IsNullOrEmpty(_layerName) ? LayerNumber.ToString() : _layerName; }
             set { _layerName = value; }
         }
         public int NumberRows { get; set; }

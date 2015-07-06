@@ -118,7 +118,7 @@ namespace KeymapGenerator.ViewModels
 
         public KeymapType GetCurrentKeymapType()
         {
-            return _selectedKeymap == null ? KeymapType.Keypress : _selectedKeymap.Type;
+            return _selectedKeymap == null ? KeymapType.Keypress : _selectedKeymap.Action.Type;
         }
 
         public void AddLayer()
@@ -148,7 +148,7 @@ namespace KeymapGenerator.ViewModels
             if (!string.IsNullOrEmpty(SelectedKeymapType)) 
             {
                 var selectedKeymapType = (KeymapType) Enum.Parse(typeof (KeymapType), SelectedKeymapType);
-                if (_selectedKeymap.Type != selectedKeymapType) _selectedKeymap.Type = selectedKeymapType;
+                if (_selectedKeymap.Action.Type != selectedKeymapType) _selectedKeymap.Action.Type = selectedKeymapType;
             }
         }
 
@@ -163,9 +163,10 @@ namespace KeymapGenerator.ViewModels
         {
             if (_selectedKeymap == null || string.IsNullOrEmpty(SelectedRefLayer)) return;
 
-            var referenceLayer = SelectedRefLayer.Split().Last();
+            _selectedKeymap.Action.ReferenceLayer = SelectedRefLayer;
 
-            _selectedKeymap.ReferenceLayer = referenceLayer;
+            var referenceLayer = _keymapLayers.First(k => k.LayerName == SelectedRefLayer);
+            _selectedKeymap.Action.RefLayerNumber = referenceLayer.LayerNumber;
         }
 
         public void SetAvailableRefLayers()
@@ -192,9 +193,9 @@ namespace KeymapGenerator.ViewModels
                 _selectedRefLayer = null;
 
                 KeymapText = _selectedKeymap.Text;
-                var selectType = _selectedKeymap.Type.ToString();
+                var selectType = _selectedKeymap.Action.Type.ToString();
                 SelectedKeymapType = selectType;
-                SelectedRefLayer = _selectedKeymap.ReferenceLayer;
+                SelectedRefLayer = _selectedKeymap.Action.ReferenceLayer;
             };
         }
 

@@ -6,9 +6,6 @@ namespace KeymapGenerator.Models
     public class Keymap
     {
         public Action Action { get; set; }
-        public KeymapType Type { get; set; }
-        public int ActionNumber { get; set; }
-        public string ReferenceLayer { get; set; }
 
         private string _text;
         public string Text
@@ -27,13 +24,14 @@ namespace KeymapGenerator.Models
 
         public Keymap()
         {
-
+            Action = new Action();
         }
 
         public Keymap(int row, int col)
         {
             Row = row;
             Col = col;
+            Action = new Action();
         }
     }
 }

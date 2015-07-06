@@ -2,7 +2,7 @@
 {
     public class KeymapLayerController
     {
-        private int _currentLayerNumber = 0;
+        private int _currentLayerNumber;
 
         public KeymapLayer GetNewLayer(int numRows, int numCols, string name)
         {

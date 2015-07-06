@@ -13,6 +13,7 @@ namespace KeymapGenerator.Utilities
         private int _currentRowCount;
         private int _currentColumnCount;
         private int _currentLayerNumber;
+        private string _currentLayerName;
         private List<List<string>> _currentRowCollection = new List<List<string>>();
 
         public List<KeymapLayer> ParseLayers(string file)
@@ -42,6 +43,7 @@ namespace KeymapGenerator.Utilities
                 {
                     var layerNumber = line[1].ToString();
                     _currentLayerNumber = Convert.ToInt32(layerNumber);
+                    _currentLayerName = GetLayerName(line);
                     continue;
                 }
 
@@ -60,7 +62,8 @@ namespace KeymapGenerator.Utilities
                 // reached the end of the current KeymapLayer
                 var currentKeymapLayer = new KeymapLayer(_currentRowCount, _currentColumnCount)
                 {
-                    LayerNumber = _currentLayerNumber
+                    LayerNumber = _currentLayerNumber,
+                    LayerName = _currentLayerName
                 };
 
                 ConvertRowCollectionToKeymapLayer(currentKeymapLayer);
@@ -71,6 +74,7 @@ namespace KeymapGenerator.Utilities
                 _currentColumnCount = 0;
                 _currentRowCollection = new List<List<string>>();
                 _currentLayerNumber = -1;
+                _currentLayerName = string.Empty;
             }
 
             var actions = ParseActions(fileLines);
@@ -79,17 +83,62 @@ namespace KeymapGenerator.Utilities
             return keymapLayers;
         }
 
+        private void ConvertRowCollectionToKeymapLayer(KeymapLayer keymapLayer)
+        {
+            for (var rowNum = 0; rowNum < _currentRowCollection.Count; rowNum++)
+            {
+                var row = _currentRowCollection[rowNum];
+                for (var colNum = 0; colNum < row.Count; colNum++)
+                {
+                    keymapLayer.Keymaps[rowNum, colNum] = new Keymap
+                    {
+                        Row = rowNum,
+                        Col = colNum,
+                        Text = row[colNum].Trim()
+                    };
+                }
+            }
+        }
+
+        private static string GetLayerName(string line)
+        {
+            var startRead = false;
+            var layerName = "";
+
+            for (var i = 0; i < line.Length; i++)
+            {
+                if (line[i] == '/' && line[i + 1] == '*')
+                {
+                    i++;
+                    startRead = true;
+                    continue;
+                }
+
+                if (!startRead) continue;
+
+                if (line[i] == '*' && line[i + 1] == '/') break;
+
+                layerName += line[i];
+            }
+
+            return layerName.Trim();
+        }
+
         private static void AssignActions(IEnumerable<Action> actions, IEnumerable<KeymapLayer> keymapLayers)
         {
             var actionList = actions.ToList();
-            foreach (var layer in keymapLayers)
+            var layerList = keymapLayers.ToList();
+
+            foreach (var layer in layerList)
             {
                 foreach (var keymap in layer.Keymaps)
                 {
-                    if (!keymap.Text.Contains("Func")) continue;
+                    if (!keymap.Text.Contains("FUNC")) continue;
 
                     var actionNumber = ExtractLayerNumber(keymap.Text);
-                    keymap.Action = actionList.First(a => a.ActionNumber == actionNumber);
+                    keymap.Action = actionList.First(a => a.Number == actionNumber);
+                    keymap.Action.ReferenceLayer =
+                        layerList.First(k => k.LayerNumber == keymap.Action.RefLayerNumber).LayerName;
                 }
             }
         }
@@ -124,8 +173,8 @@ namespace KeymapGenerator.Utilities
 
                 yield return new Action
                 {
-                    ActionNumber = actionNumber,
-                    ActionType = actionType,
+                    Number = actionNumber,
+                    Type = actionType,
                     RefLayerNumber = layerNumber
                 };
             }
@@ -141,23 +190,6 @@ namespace KeymapGenerator.Utilities
             }
 
             return -1;
-        }
-
-        private void ConvertRowCollectionToKeymapLayer(KeymapLayer keymapLayer)
-        {
-            for (var rowNum = 0; rowNum < _currentRowCollection.Count; rowNum++)
-            {
-                var row = _currentRowCollection[rowNum];
-                for (var colNum = 0; colNum < row.Count; colNum++)
-                {
-                    keymapLayer.Keymaps[rowNum, colNum] = new Keymap
-                    {
-                        Row = rowNum,
-                        Col = colNum,
-                        Text = row[colNum].Trim()
-                    };
-                }
-            }
         }
     }
 }
