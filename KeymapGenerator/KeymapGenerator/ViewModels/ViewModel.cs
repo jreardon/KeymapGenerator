@@ -89,7 +89,7 @@ namespace KeymapGenerator.ViewModels
         public void ImportKeymapFile(string file)
         {
             var keymapFileReader = new KeymapFileReader();
-            _keymapLayers = keymapFileReader.Read(file);
+            _keymapLayers = keymapFileReader.ParseLayers(file);
 
             foreach (var layer in _keymapLayers) {
                 AvailableLayers.Add(new ComboBoxItem { Content = layer.LayerName });

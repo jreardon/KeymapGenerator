@@ -13,7 +13,7 @@ namespace KeymapGenerator.Utilities
         private int _currentLayerNumber;
         private List<List<string>> _currentRowCollection = new List<List<string>>();
 
-        public List<KeymapLayer> Read(string file)
+        public List<KeymapLayer> ParseLayers(string file)
         {
             var keymapLayers = new List<KeymapLayer>();
 
