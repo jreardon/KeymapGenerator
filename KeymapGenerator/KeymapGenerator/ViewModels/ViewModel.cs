@@ -133,18 +133,11 @@ namespace KeymapGenerator.ViewModels
                 return;
             }
 
-            try
-            {
-                var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, _addLayerName);
-                _keymapLayerController.PopulateKeymapLayer(keymapLayer);
-                AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
+            var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, _addLayerName);
+            _keymapLayerController.PopulateKeymapLayer(keymapLayer);
+            AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
 
-                _keymapLayers.Add(keymapLayer);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("An semi-expected error occured that we are trying to resolve. In the future, try to add all layers before editing them.");
-            }
+            _keymapLayers.Add(keymapLayer);
         }
 
         public void UpdateKeymapType()
