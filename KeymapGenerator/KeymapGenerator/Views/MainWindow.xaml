@@ -10,7 +10,7 @@
         </Grid>
 
         <Label x:Name="lblSelectLayer" Content="Select Layer:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,13,0,0"/>
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="119,14,0,0" ItemsSource="{Binding AvailableLayers}" SelectedItem="{Binding SelectedLayer}" SelectionChanged="ComboBox_SelectionChanged"/>
+        <ComboBox x:Name="CbKeymapLayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="119,14,0,0" ItemsSource="{Binding AvailableLayers}" SelectedItem="{Binding SelectedLayer}" SelectionChanged="CbKeymapLayer_SelectionChanged"/>
         <Label x:Name="LblNewLayer" Content="New Layer:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="286,14,0,0"/>
         <TextBox x:Name="TxtAddLayer" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="369,13,0,0" 
                  Text="{Binding AddLayerName}" />
@@ -19,8 +19,10 @@
         <Label Content="Keymap" VerticalAlignment="Top" Margin="771,115,22.2,0" Width="154" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
         <Label Content="Text:" HorizontalAlignment="Left" Margin="729,181,0,0" VerticalAlignment="Top"/>
         <Label Content="Type:" HorizontalAlignment="Left" Margin="726,228,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="CbKeymapType" HorizontalAlignment="Left" Margin="792,228,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding KeymapTypes}" SelectedItem="{Binding SelectedKeymapType, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbKeymapType_SelectionChanged"/>
-        <TextBox x:Name="TxtKeymapText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="792,181,0,0" Text="{Binding KeymapText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TxtKeymapText_TextChanged" />
+        <ComboBox x:Name="CbKeymapType" HorizontalAlignment="Left" Margin="798,228,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding KeymapTypes}" SelectedItem="{Binding SelectedKeymapType, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbKeymapType_SelectionChanged"/>
+        <TextBox x:Name="TxtKeymapText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="798,181,0,0" Text="{Binding KeymapText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TxtKeymapText_TextChanged" />
         <Button x:Name="BtnImportKeymap" Content="Import Keymap File" HorizontalAlignment="Left" VerticalAlignment="Top" Width="114" Margin="770,452,0,0" Click="BtnImportKeymap_Click"/>
+        <Label Content="Ref. Layer:" HorizontalAlignment="Left" Margin="729,268,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CbRefLayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="798,272,0,0" ItemsSource="{Binding AvailableLayers}" SelectedItem="{Binding SelectedRefLayer, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>

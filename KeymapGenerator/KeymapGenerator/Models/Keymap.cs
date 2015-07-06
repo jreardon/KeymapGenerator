@@ -6,6 +6,7 @@ namespace KeymapGenerator.Models
     public class Keymap
     {
         public KeymapType Type { get; set; }
+        public int ActionNumber { get; set; }
         public string ReferenceLayer { get; set; }
 
         private string _text;

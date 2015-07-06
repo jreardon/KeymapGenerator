@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using KeymapGenerator.DataTypes;
 using KeymapGenerator.ViewModels;
 using Microsoft.Win32;
 
@@ -14,9 +15,10 @@ namespace KeymapGenerator.Views
             InitializeComponent();
             _viewModel = new ViewModel();
             DataContext = _viewModel;
+            CbRefLayer.IsEnabled = false;
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CbKeymapLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var keymapLayer = _viewModel.GetKeymapLayer();
 
@@ -40,6 +42,17 @@ namespace KeymapGenerator.Views
         private void CbKeymapType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _viewModel.UpdateKeymapType();
+
+            var keymapType = _viewModel.GetCurrentKeymapType();
+            if (keymapType == KeymapType.MomentaryLayer || keymapType == KeymapType.SetLayer)
+            {
+                CbRefLayer.IsEnabled = true;
+            }
+            else
+            {
+                _viewModel.SelectedRefLayer = "";
+                CbRefLayer.IsEnabled = false;
+            }
         }
 
         private void BtnImportKeymap_Click(object sender, RoutedEventArgs e)

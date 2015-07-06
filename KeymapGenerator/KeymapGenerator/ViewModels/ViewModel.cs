@@ -19,6 +19,19 @@ namespace KeymapGenerator.ViewModels
         public ComboBoxItem SelectedLayer { get; set; }
         public List<string> KeymapTypes { get; set; }
 
+        private string _selectedRefLayer;
+        public string SelectedRefLayer
+        {
+            get { return _selectedRefLayer; }
+            set
+            {
+                if (value == _selectedRefLayer) return;
+
+                _selectedRefLayer = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _selectedKeymapType;
         public string SelectedKeymapType
         {
@@ -101,6 +114,11 @@ namespace KeymapGenerator.ViewModels
             return _currentKeymapLayer;
         }
 
+        public KeymapType GetCurrentKeymapType()
+        {
+            return _selectedKeymap == null ? KeymapType.Keypress : _selectedKeymap.Type;
+        }
+
         public void AddLayer()
         {
             if (string.IsNullOrEmpty(_addLayerName)) {
@@ -113,16 +131,26 @@ namespace KeymapGenerator.ViewModels
                 return;
             }
 
-            var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, _addLayerName);
-            _keymapLayers.Add(keymapLayer);
+            try
+            {
+                var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, _addLayerName);
+                _keymapLayerController.PopulateKeymapLayer(keymapLayer);
+                AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
 
-            AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
+                _keymapLayers.Add(keymapLayer);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("An semi-expected error occured that we are trying to resolve. In the future, try to add all layers before editing them.");
+            }
         }
 
         public void UpdateKeymapType()
         {
+            if (_selectedKeymap == null) return;
+
             // prevent this from occurring on startup
-            if (SelectedKeymapType != null) 
+            if (!string.IsNullOrEmpty(SelectedKeymapType)) 
             {
                 var selectedKeymapType = (KeymapType) Enum.Parse(typeof (KeymapType), SelectedKeymapType);
                 if (_selectedKeymap.Type != selectedKeymapType) _selectedKeymap.Type = selectedKeymapType;
@@ -131,6 +159,8 @@ namespace KeymapGenerator.ViewModels
 
         public void UpdatedKeymapText()
         {
+            if (_selectedKeymap == null) return;
+
             _selectedKeymap.Text = KeymapText;
         }
 
