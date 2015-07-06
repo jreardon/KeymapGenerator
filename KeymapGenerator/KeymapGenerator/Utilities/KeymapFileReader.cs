@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using KeymapGenerator.DataTypes;
 using KeymapGenerator.Models;
+using Action = KeymapGenerator.Models.Action;
 
 namespace KeymapGenerator.Utilities
 {
@@ -35,6 +37,7 @@ namespace KeymapGenerator.Utilities
                 // we've reached the end of keymap definition block
                 if (line == "};") break;
 
+                // start new layer
                 if (line[0] == '[')
                 {
                     var layerNumber = line[1].ToString();
@@ -42,6 +45,7 @@ namespace KeymapGenerator.Utilities
                     continue;
                 }
 
+                // start new row
                 if (line[0] == '{')
                 {
                     _currentRowCount++;
@@ -53,6 +57,7 @@ namespace KeymapGenerator.Utilities
 
                 if (line != "}" && line != "},") continue;
 
+                // reached the end of the current KeymapLayer
                 var currentKeymapLayer = new KeymapLayer(_currentRowCount, _currentColumnCount)
                 {
                     LayerNumber = _currentLayerNumber
@@ -61,13 +66,81 @@ namespace KeymapGenerator.Utilities
                 ConvertRowCollectionToKeymapLayer(currentKeymapLayer);
                 keymapLayers.Add(currentKeymapLayer);
 
+                // reset
                 _currentRowCount = 0;
                 _currentColumnCount = 0;
                 _currentRowCollection = new List<List<string>>();
                 _currentLayerNumber = -1;
             }
 
+            var actions = ParseActions(fileLines);
+            AssignActions(actions, keymapLayers);
+
             return keymapLayers;
+        }
+
+        private static void AssignActions(IEnumerable<Action> actions, IEnumerable<KeymapLayer> keymapLayers)
+        {
+            var actionList = actions.ToList();
+            foreach (var layer in keymapLayers)
+            {
+                foreach (var keymap in layer.Keymaps)
+                {
+                    if (!keymap.Text.Contains("Func")) continue;
+
+                    var actionNumber = ExtractLayerNumber(keymap.Text);
+                    keymap.Action = actionList.First(a => a.ActionNumber == actionNumber);
+                }
+            }
+        }
+
+        private static IEnumerable<Action> ParseActions(IEnumerable<string> fileLines)
+        {
+            var startRead = false;
+            foreach (var line in fileLines.Select(l => l.Trim()).Where(line => line.Length != 0))
+            {
+                if (line == "const uint16_t PROGMEM fn_actions[] = {")
+                {
+                    startRead = true;
+                    continue;
+                }
+
+                if (!startRead) continue;
+
+                // reached the end
+                if (line == "};") break;
+
+                if (line[0] != '[') continue;
+
+                var actionNumber = Convert.ToInt32(line[1].ToString());
+                var layerNumber = ExtractLayerNumber(line);
+                var actionType = KeymapType.Keypress;
+
+                if (line.Contains("ACTION_LAYER_MOMENTARY"))
+                    actionType = KeymapType.MomentaryLayer;
+
+                if (line.Contains("ACTION_DEFAULT_LAYER_SET"))
+                    actionType = KeymapType.SetLayer;
+
+                yield return new Action
+                {
+                    ActionNumber = actionNumber,
+                    ActionType = actionType,
+                    RefLayerNumber = layerNumber
+                };
+            }
+        }
+
+        private static int ExtractLayerNumber(string line)
+        {
+            for (var i = 0; i < line.Length; i++)
+            {
+                if (line[i] != '(') continue;
+
+                return Convert.ToInt32(line[i + 1].ToString());
+            }
+
+            return -1;
         }
 
         private void ConvertRowCollectionToKeymapLayer(KeymapLayer keymapLayer)
