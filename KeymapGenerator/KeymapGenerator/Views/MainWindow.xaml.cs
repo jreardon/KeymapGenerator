@@ -21,6 +21,8 @@ namespace KeymapGenerator.Views
         private void CbKeymapLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var keymapLayer = _viewModel.GetKeymapLayer();
+
+            _viewModel.ResetKeymap();
             _viewModel.SetAvailableRefLayers();
 
             KeymapContainer.Children.Clear();

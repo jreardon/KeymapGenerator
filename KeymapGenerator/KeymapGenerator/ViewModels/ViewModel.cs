@@ -179,6 +179,13 @@ namespace KeymapGenerator.ViewModels
                 AvailableRefLayers.Add(refLayer);
         }
 
+        public void ResetKeymap()
+        {
+            SelectedRefLayer = null;
+            SelectedKeymapType = null;
+            KeymapText = string.Empty;
+        }
+
         private Action<object, RoutedEventArgs> KeymapButton_Click()
         {
             return (sender, e) =>
