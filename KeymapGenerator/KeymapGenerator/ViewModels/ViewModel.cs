@@ -173,7 +173,7 @@ namespace KeymapGenerator.ViewModels
         {
             AvailableRefLayers.Clear();
             var availableRefLayers =
-                _keymapLayers.Where(x => x.LayerName != _currentKeymapLayer.LayerName).Select(x => x.LayerName);
+                _keymapLayers.Select(x => x.LayerName);
 
             foreach (var refLayer in availableRefLayers)
                 AvailableRefLayers.Add(refLayer);
