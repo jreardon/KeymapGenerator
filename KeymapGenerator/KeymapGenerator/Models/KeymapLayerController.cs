@@ -2,6 +2,8 @@
 {
     public class KeymapLayerController
     {
+        private int _currentLayerNumber = 0;
+
         public KeymapLayer GetNewLayer(int numRows, int numCols, string name)
         {
             var keymaps = GetNewKeymapsArray(numRows, numCols);
@@ -9,6 +11,7 @@
             return new KeymapLayer(numRows, numCols)
             {
                 LayerName = name,
+                LayerNumber = _currentLayerNumber++,
                 KeymapGrid = keymapGrid,
                 Keymaps = GetNewKeymapsArray(numRows, numCols)
             };
