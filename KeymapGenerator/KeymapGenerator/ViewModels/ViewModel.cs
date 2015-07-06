@@ -70,6 +70,7 @@ namespace KeymapGenerator.ViewModels
         private List<KeymapLayer> _keymapLayers;
         private KeymapLayer _currentKeymapLayer;
         private Keymap _selectedKeymap;
+        private string _workingFile;
 
         public ViewModel()
         {
@@ -88,6 +89,7 @@ namespace KeymapGenerator.ViewModels
 
         public void ImportKeymapFile(string file)
         {
+            _workingFile = file;
             var keymapFileReader = new KeymapFileReader();
             _keymapLayers = keymapFileReader.ParseLayers(file);
 
@@ -95,6 +97,12 @@ namespace KeymapGenerator.ViewModels
                 AvailableLayers.Add(new ComboBoxItem { Content = layer.LayerName });
                 _keymapLayerController.PopulateKeymapLayer(layer);
             }
+        }
+
+        public void SaveKeymapToFile()
+        {
+            var keymapFileWriter = new KeymapFileWriter();
+            keymapFileWriter.Write(_keymapLayers, _workingFile);
         }
 
         public KeymapLayer GetKeymapLayer()

@@ -72,5 +72,10 @@ namespace KeymapGenerator.Views
         {
             _viewModel.SetRefLayer();
         }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SaveKeymapToFile();
+        }
     }
 }
