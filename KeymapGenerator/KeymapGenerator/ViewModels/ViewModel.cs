@@ -18,6 +18,7 @@ namespace KeymapGenerator.ViewModels
         public ObservableCollection<ComboBoxItem> AvailableLayers { get; set; }
         public ComboBoxItem SelectedLayer { get; set; }
         public List<string> KeymapTypes { get; set; }
+        public ObservableCollection<string> AvailableRefLayers { get; set; } 
 
         private string _selectedRefLayer;
         public string SelectedRefLayer
@@ -75,6 +76,7 @@ namespace KeymapGenerator.ViewModels
             _keymapLayers = new List<KeymapLayer>();
             _keymapLayerController = new KeymapLayerController();
             AvailableLayers = new ObservableCollection<ComboBoxItem>();
+            AvailableRefLayers = new ObservableCollection<string>();
 
             var cbItem = new ComboBoxItem { Content = "<--Select-->" };
             SelectedLayer = cbItem;
@@ -164,6 +166,25 @@ namespace KeymapGenerator.ViewModels
             _selectedKeymap.Text = KeymapText;
         }
 
+        public void SetRefLayer()
+        {
+            if (_selectedKeymap == null || string.IsNullOrEmpty(SelectedRefLayer)) return;
+
+            var referenceLayer = SelectedRefLayer.Split().Last();
+
+            _selectedKeymap.ReferenceLayer = referenceLayer;
+        }
+
+        public void SetAvailableRefLayers()
+        {
+            AvailableRefLayers.Clear();
+            var availableRefLayers =
+                _keymapLayers.Where(x => x.LayerName != _currentKeymapLayer.LayerName).Select(x => x.LayerName);
+
+            foreach (var refLayer in availableRefLayers)
+                AvailableRefLayers.Add(refLayer);
+        }
+
         private Action<object, RoutedEventArgs> KeymapButton_Click()
         {
             return (sender, e) =>
@@ -172,11 +193,15 @@ namespace KeymapGenerator.ViewModels
                 var row = Grid.GetRow(button);
                 var col = Grid.GetColumn(button);
                 _selectedKeymap = _currentKeymapLayer.Keymaps[row, col];
+                
+                // reset between key changes
+                _selectedKeymapType = null; 
+                _selectedRefLayer = null;
 
-                _selectedKeymapType = null; // reset between key changes
                 KeymapText = _selectedKeymap.Text;
                 var selectType = _selectedKeymap.Type.ToString();
                 SelectedKeymapType = selectType;
+                SelectedRefLayer = _selectedKeymap.ReferenceLayer;
             };
         }
 

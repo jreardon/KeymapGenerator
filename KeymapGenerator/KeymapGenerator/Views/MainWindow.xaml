@@ -23,6 +23,6 @@
         <TextBox x:Name="TxtKeymapText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="798,181,0,0" Text="{Binding KeymapText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TxtKeymapText_TextChanged" />
         <Button x:Name="BtnImportKeymap" Content="Import Keymap File" HorizontalAlignment="Left" VerticalAlignment="Top" Width="114" Margin="770,452,0,0" Click="BtnImportKeymap_Click"/>
         <Label Content="Ref. Layer:" HorizontalAlignment="Left" Margin="729,268,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="CbRefLayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="798,272,0,0" ItemsSource="{Binding AvailableLayers}" SelectedItem="{Binding SelectedRefLayer, UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox x:Name="CbRefLayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="798,272,0,0" ItemsSource="{Binding AvailableRefLayers}" SelectedItem="{Binding SelectedRefLayer, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbRefLayer_SelectionChanged"/>
     </Grid>
 </Window>

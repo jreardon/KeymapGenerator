@@ -21,6 +21,7 @@ namespace KeymapGenerator.Views
         private void CbKeymapLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var keymapLayer = _viewModel.GetKeymapLayer();
+            _viewModel.SetAvailableRefLayers();
 
             KeymapContainer.Children.Clear();
             if (keymapLayer == null) return;
@@ -63,6 +64,11 @@ namespace KeymapGenerator.Views
 
             if (dialogSuccessful == true)
                 _viewModel.ImportKeymapFile(dialog.FileName);
+        }
+
+        private void CbRefLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _viewModel.SetRefLayer();
         }
     }
 }
