@@ -23,7 +23,7 @@
 
             for (var i = 0; i < keymapLayer.NumberRows; i++) {
                 for (var j = 0; j < keymapLayer.NumberCols; j++) {
-                    keymapLayer.Keymaps[i, j].Button.Content = keymapLayer.Keymaps[i, j].Text;
+                    keymapLayer.Keymaps[i, j].Button.Content = keymapLayer.Keymaps[i, j].DisplayText;
                 }
             }
         }

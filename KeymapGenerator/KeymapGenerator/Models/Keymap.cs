@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using KeymapGenerator.DataTypes;
+using KeymapGenerator.Data;
 
 namespace KeymapGenerator.Models
 {
@@ -7,17 +7,30 @@ namespace KeymapGenerator.Models
     {
         public Action Action { get; set; }
 
-        private string _text;
-        public string Text
+        private string _keypress;
+        public string Keypress
         {
-            get {return _text;}
+            get {return _keypress;}
             set
             {
-                _text = value;
-                if (Button != null)
-                    Button.Content = _text;
+                _keypress = value;
+                DisplayText = TmkKeymappings.GetDisplayText(_keypress);
             }
         }
+
+        private string _displayText;
+
+        public string DisplayText
+        {
+            get { return _displayText; }
+            set
+            {
+                _displayText = value;
+                if (Button != null)
+                    Button.Content = _displayText;
+            }
+        }
+
         public int Row { get; set; }
         public int Col { get; set; }
         public Button Button { get; set; }

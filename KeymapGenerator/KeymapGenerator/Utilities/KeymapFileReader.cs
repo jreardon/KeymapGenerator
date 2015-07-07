@@ -94,7 +94,7 @@ namespace KeymapGenerator.Utilities
                     {
                         Row = rowNum,
                         Col = colNum,
-                        Text = row[colNum].Trim()
+                        Keypress = row[colNum].Trim()
                     };
                 }
             }
@@ -133,9 +133,9 @@ namespace KeymapGenerator.Utilities
             {
                 foreach (var keymap in layer.Keymaps)
                 {
-                    if (!keymap.Text.Contains("FUNC")) continue;
+                    if (!keymap.Keypress.Contains("FUNC")) continue;
 
-                    var actionNumber = ExtractLayerNumber(keymap.Text);
+                    var actionNumber = ExtractLayerNumber(keymap.Keypress);
                     keymap.Action = actionList.First(a => a.Number == actionNumber);
                     keymap.Action.ReferenceLayer =
                         layerList.First(k => k.LayerNumber == keymap.Action.RefLayerNumber).LayerName;

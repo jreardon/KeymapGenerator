@@ -27,7 +27,7 @@ namespace KeymapGenerator.Utilities
                     for (var col = 0; col < layer.NumberCols; col++)
                     {
                         var keymap = layer.Keymaps[row, col];
-                        line += keymap.Text;
+                        line += keymap.Keypress;
 
                         if (col != layer.NumberCols) line += ",";
                     }

@@ -164,7 +164,7 @@ namespace KeymapGenerator.ViewModels
         {
             if (_selectedKeymap == null) return;
 
-            _selectedKeymap.Text = KeymapText;
+            _selectedKeymap.Keypress = KeymapText;
         }
 
         public void SetRefLayer()
@@ -207,7 +207,7 @@ namespace KeymapGenerator.ViewModels
                 _selectedKeymapType = null; 
                 _selectedRefLayer = null;
 
-                KeymapText = _selectedKeymap.Text;
+                KeymapText = _selectedKeymap.Keypress;
                 var selectType = _selectedKeymap.Action.Type.ToString();
                 SelectedKeymapType = selectType;
                 SelectedRefLayer = _selectedKeymap.Action.ReferenceLayer;

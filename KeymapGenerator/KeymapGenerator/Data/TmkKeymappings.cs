@@ -4,22 +4,36 @@ namespace KeymapGenerator.Data
 {
     public class TmkKeymappings
     {
-        public Dictionary<string, string> MapDictionary = new Dictionary<string, string>
+        public static string GetDisplayText(string keypress)
+        {
+            return _mapDictionary.ContainsKey(keypress)
+                ? _mapDictionary[keypress]
+                : keypress;
+        }
+
+        public static Dictionary<string, string> MapDictionary
+        {
+            get { return _mapDictionary; }
+            set { _mapDictionary = value; }
+        }
+
+        private static Dictionary<string, string> _mapDictionary = new Dictionary<string, string>
         {
             // Modifiers and Special Keys
             { "KC_PSCR", "Print Screen" },
             { "KC_SLCK", "Scroll Lock" },
             { "KC_PAUS", "Pause/Break" },
-            { "KC_MINS", "Minus" },
-            { "KC_EQL ", "Equal" },
-            { "KC_GRV ", "Grave" },
-            { "KC_RBRC", "Right Bracket" },
-            { "KC_LBRC", "Left Bracket" },
-            { "KC_COMM", "Comma" },
-            { "KC_BSLS", "Backslash" },
-            { "KC_SLSH", "Slash" },
-            { "KC_SCLN", "Semicolon" },
-            { "KC_QUOT", "Quote" },
+            { "KC_MINS", "- _" },
+            { "KC_EQL", "= +" },
+            { "KC_GRV", "` ~" },
+            { "KC_RBRC", "] }" },
+            { "KC_LBRC", "[ {" },
+            { "KC_COMM", ", <" },
+            { "KC_DOT", ". >" },
+            { "KC_BSLS", "\\" },
+            { "KC_SLSH", "/ |" },
+            { "KC_SCLN", "; :" },
+            { "KC_QUOT", "' \"" },
             { "KC_NUHS", "Non-US Hash" },
             { "KC_NUBS", "Non-US Backslash" },
             { "KC_LCAP", "Locking Caps" },
@@ -34,25 +48,29 @@ namespace KeymapGenerator.Data
             { "KC_INS", "Insert" },
             { "KC_TAB", "Tab" },
             { "KC_CAPS", "Capslock" },
-            { "KC_LCTRL", "Left Control" },
-            { "KC_LSHIFT", "Left Shift" },
-            { "KC_LALT", "Left Alt" },
-            { "KC_LGUI", "Left GUI (Win)" },
-            { "KC_RCTRL", "Right Control" },
-            { "KC_RSHIFT", "Right Shift" },
-            { "KC_RALT", "Right Alt" },
-            { "KC_RGUI", "Right GUI (Win)" },
-            { "KC_APP", "Application" },
+            { "KC_LCTRL", "L Ctrl" },
+            { "KC_LCTL", "L Ctrl" },
+            { "KC_LSHIFT", "L Shift" },
+            { "KC_LSFT", "L Shift" },
+            { "KC_LALT", "L Alt" },
+            { "KC_LGUI", "L GUI" },
+            { "KC_RCTRL", "R Ctrl" },
+            { "KC_RCTL", "R Ctrl" },
+            { "KC_RSHIFT", "R Shift" },
+            { "KC_RSFT", "R Shift" },
+            { "KC_RALT", "R Alt" },
+            { "KC_RGUI", "R GUI" },
+            { "KC_APP", "App" },
             { "KC_SPC", "Space" },
             { "KC_HOME", "Home" },
             { "KC_END", "End" },
             { "KC_PGUP", "Page Up" },
             { "KC_PGDOWN", "Page Down" },
             { "KC_RIGHT", "Arrow Right" },
+            { "KC_RGHT", "Arrow Right" },
             { "KC_LEFT", "Arrow Left" },           
             { "KC_DOWN", "Arrow Down" },
             { "KC_UP", "Arrow Up" },
-            { "KC_DOT", "Dot" },
 
             // Alphanumerics
             { "KC_A", "A" },
@@ -188,8 +206,9 @@ namespace KeymapGenerator.Data
             { "KC_WREF", "WWW Refresh" },
             { "KC_WFAV", "WWW Favorites" },
             
-            // Transparent
-            { "KC_TRNS", "Transparent" }
+            // Special
+            { "KC_TRNS", "Transparent" },
+            { "BL_STEP", "Backlight" }
         };
     }
 }
