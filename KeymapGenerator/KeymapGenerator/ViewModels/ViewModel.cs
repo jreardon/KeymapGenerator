@@ -189,6 +189,7 @@ namespace KeymapGenerator.ViewModels
 
         public void ResetKeymap()
         {
+            _selectedKeymap = null;
             SelectedRefLayer = null;
             SelectedKeymapType = null;
             KeymapText = string.Empty;
