@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Text.RegularExpressions;
+using System.Windows.Controls;
 using KeymapGenerator.Data;
 
 namespace KeymapGenerator.Models
@@ -14,7 +15,18 @@ namespace KeymapGenerator.Models
             set
             {
                 _keypress = value;
-                DisplayText = TmkKeymappings.GetDisplayText(_keypress);
+
+                var regex = new Regex(@"(?<=\().+?(?=\))");
+                if (regex.IsMatch(_keypress))
+                {
+                    var keypress = regex.Match(_keypress).Value;
+                    DisplayText = TmkKeymappings.GetDisplayText(keypress)[1] == string.Empty
+                        ? _keypress
+                        : TmkKeymappings.GetDisplayText(keypress)[1];
+                    return;
+                }
+
+                DisplayText = TmkKeymappings.GetDisplayText(_keypress)[0];
             }
         }
 
