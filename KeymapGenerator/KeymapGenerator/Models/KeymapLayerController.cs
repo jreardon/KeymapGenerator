@@ -1,4 +1,6 @@
-﻿namespace KeymapGenerator.Models
+﻿using System.Windows;
+
+namespace KeymapGenerator.Models
 {
     public class KeymapLayerController
     {
@@ -23,7 +25,10 @@
 
             for (var i = 0; i < keymapLayer.NumberRows; i++) {
                 for (var j = 0; j < keymapLayer.NumberCols; j++) {
-                    keymapLayer.Keymaps[i, j].Button.Content = keymapLayer.Keymaps[i, j].DisplayText;
+                    var button = keymapLayer.Keymaps[i, j].Button;
+                    button.FontSize = 10;
+                    button.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    button.Content = keymapLayer.Keymaps[i, j].DisplayText;
                 }
             }
         }
