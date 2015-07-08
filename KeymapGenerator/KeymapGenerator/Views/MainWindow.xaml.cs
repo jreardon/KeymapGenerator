@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using KeymapGenerator.DataTypes;
 using KeymapGenerator.ViewModels;
@@ -64,8 +65,17 @@ namespace KeymapGenerator.Views
 
             var dialogSuccessful = dialog.ShowDialog();
 
-            if (dialogSuccessful == true)
-                _viewModel.ImportKeymapFile(dialog.FileName);
+            try
+            {
+                if (dialogSuccessful == true)
+                    _viewModel.ImportKeymapFile(dialog.FileName);
+                else
+                    MessageBox.Show("File selection failed.");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Import failed.");
+            }
         }
 
         private void CbRefLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,7 +85,17 @@ namespace KeymapGenerator.Views
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.SaveKeymapToFile();
+            try
+            {
+                _viewModel.SaveKeymapToFile();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("An error occurred while saving. It is likely that the save failed.");
+                return;
+            }
+
+            MessageBox.Show("Save successful.");
         }
     }
 }
