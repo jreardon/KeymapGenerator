@@ -75,7 +75,10 @@ namespace KeymapGenerator.Views
             catch (Exception)
             {
                 MessageBox.Show("Import failed.");
+                return;
             }
+
+            MessageBox.Show("Succesfully imported keymap");
         }
 
         private void CbRefLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
