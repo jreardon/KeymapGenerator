@@ -67,6 +67,7 @@ namespace KeymapGenerator.Data
             { "KC_HOME", new[]{"Home", ""} },
             { "KC_END", new[]{"End", ""} },
             { "KC_PGUP", new[]{"Page Up", ""} },
+            { "KC_PGDN", new []{"Page Down", ""}},
             { "KC_PGDOWN", new[]{"Page Down", ""} },
             { "KC_RIGHT", new[]{"Arrow\nRight", ""} },
             { "KC_RGHT", new[]{"Arrow\nRight", ""} },
