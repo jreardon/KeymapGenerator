@@ -60,13 +60,14 @@ namespace KeymapGenerator.Views
 
         private void DeleteLayer_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.LayerAction = LayerAction.Delete;
-            AddLayerInputBox.Visibility = Visibility.Visible;
+            _viewModel.DeleteLayer();
+            KeymapContainer.Children.Clear();
         }
 
         private void RenameLayer_Click(object sender, RoutedEventArgs e)
         {
-
+            _viewModel.LayerAction = LayerAction.Rename;
+            AddLayerInputBox.Visibility = Visibility.Visible;
         }
 
         private void TxtKeymapText_TextChanged(object sender, TextChangedEventArgs e)

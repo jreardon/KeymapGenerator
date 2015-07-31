@@ -86,6 +86,7 @@ namespace KeymapGenerator.ViewModels
             var keymapFileReader = new KeymapFileReader();
             _keymapLayers = keymapFileReader.ParseLayers(file);
 
+            AvailableLayersMenu.Clear();
             foreach (var layer in _keymapLayers)
             {
                 var menuItem = new MenuItem {Header = layer.LayerName};
@@ -130,17 +131,11 @@ namespace KeymapGenerator.ViewModels
 
         public void TriggerLayerAction(string layerName)
         {
-            switch (LayerAction)
-            {
-                case LayerAction.Add:
-                    AddLayer(layerName);
-                    break;
-                case LayerAction.Delete:
-                    DeleteLayer(layerName);
-                    break;
-                case LayerAction.Rename:
-                    break;
-            }
+            if (LayerAction == LayerAction.Add) 
+                AddLayer(layerName);
+
+            if (LayerAction == LayerAction.Rename)
+                RenameLayer(layerName);
         }
 
         private void AddLayer(string layerName)
@@ -166,19 +161,36 @@ namespace KeymapGenerator.ViewModels
             _keymapLayers.Add(keymapLayer);
         }
 
-        private void DeleteLayer(string layerName)
+        private void RenameLayer(string layerName)
         {
-            layerName = layerName.Trim();
-            var layer = _keymapLayers.FirstOrDefault(x => x.LayerName == layerName);
-            if (layer == null)
+            if (_currentKeymapLayer == null)
             {
-                MessageBox.Show(string.Format("Error: No layer found by the name '{0}'", layerName));
+                MessageBox.Show("You must select a layer in order to rename it.");
                 return;
             }
 
-            var menuItem = AvailableLayersMenu.First(x => (string) x.Header == layerName);
+            if (AvailableLayersMenu.Any(x => (string) x.Header == layerName))
+            {
+                MessageBox.Show(string.Format("A layer with the name '{0}' already exists.", layerName));
+                return;
+            }
+
+            AvailableLayersMenu.First(x => (string) x.Header == _currentKeymapLayer.LayerName).Header = layerName;
+            _currentKeymapLayer.LayerName = layerName;
+        }
+
+        public void DeleteLayer()
+        {
+            if (_currentKeymapLayer == null)
+            {
+                MessageBox.Show("You must select a layer in order to delete it.");
+                return;
+            }
+
+            var menuItem = AvailableLayersMenu.First(x => (string) x.Header == _currentKeymapLayer.LayerName);
             AvailableLayersMenu.Remove(menuItem);
-            _keymapLayers.Remove(layer);
+            _keymapLayers.Remove(_currentKeymapLayer);
+            _currentKeymapLayer = null;
         }
 
         public void UpdateKeymapType()

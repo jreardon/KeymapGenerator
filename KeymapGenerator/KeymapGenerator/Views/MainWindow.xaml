@@ -21,9 +21,10 @@
                 <MenuItem Header="Save" Click="BtnSave_Click"/>
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem Header="Add Layer" Click="AddLayer_Click"/>
-                <MenuItem Header="Delete Layer" Click="DeleteLayer_Click"/>
-                <MenuItem Header="Rename Name" Click="RenameLayer_Click"/>
+                <MenuItem Header="Add New Layer" Click="AddLayer_Click"/>
+                <Separator/>
+                <MenuItem Header="Delete Current Layer" Click="DeleteLayer_Click"/>
+                <MenuItem Header="Rename Current Name" Click="RenameLayer_Click"/>
             </MenuItem>
             <MenuItem Header="Select Layer" ItemsSource="{Binding AvailableLayersMenu, UpdateSourceTrigger=PropertyChanged}"/>
         </Menu>
