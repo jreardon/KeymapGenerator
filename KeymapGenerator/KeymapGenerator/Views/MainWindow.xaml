@@ -6,35 +6,43 @@
         Title="MainWindow" Height="512.588" Width="953.828">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="309*"/>
-            <ColumnDefinition Width="637*"/>
-        </Grid.ColumnDefinitions>
-        <Grid x:Name="KeymapContainer" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="639" Margin="25,115,0,0" Grid.ColumnSpan="2"/>
-
-        <Label x:Name="lblSelectLayer" Content="Select Layer:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,44,0,0"/>
-        <ComboBox x:Name="CbKeymapLayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="121,44,0,0" ItemsSource="{Binding AvailableLayers}" SelectedItem="{Binding SelectedLayer}" SelectionChanged="CbKeymapLayer_SelectionChanged"/>
-        <Label x:Name="LblNewLayer" Content="New Layer:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="284,40,0,0" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="TxtAddLayer" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="59,47,0,0" 
-                 Text="{Binding AddLayerName}" Grid.Column="1" />
-        <Button Content="Add Layer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="202,47,0,0" Click="AddLayer_Click" Grid.Column="1"/>
-        <GridSplitter HorizontalAlignment="Left" Height="483" Margin="387,0,0,-1" VerticalAlignment="Top" Width="5" Grid.Column="1"/>
-        <Label Content="Keymap" VerticalAlignment="Top" Margin="461,115,22,0" Width="154" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Grid.Column="1"/>
-        <Label Content="Text:" HorizontalAlignment="Left" Margin="420,181,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <Label Content="Type:" HorizontalAlignment="Left" Margin="417,228,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <ComboBox x:Name="CbKeymapType" HorizontalAlignment="Left" Margin="489,228,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding KeymapTypes}" SelectedItem="{Binding SelectedKeymapType, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbKeymapType_SelectionChanged" Grid.Column="1"/>
-        <TextBox x:Name="TxtKeymapText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="489,181,0,0" Text="{Binding KeymapText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TxtKeymapText_TextChanged" Grid.Column="1" />
-        <Label Content="Ref. Layer:" HorizontalAlignment="Left" Margin="420,268,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <ComboBox x:Name="CbRefLayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="489,272,0,0" ItemsSource="{Binding AvailableRefLayers}" SelectedItem="{Binding SelectedRefLayer, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbRefLayer_SelectionChanged" Grid.Column="1"/>
-        <Menu HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="98" Margin="2,0,0,0">
+        <Grid x:Name="KeymapContainer" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="639" Margin="25,115,0,0"/>
+        <GridSplitter HorizontalAlignment="Left" Height="483" Margin="696,0,0,-1" VerticalAlignment="Top" Width="5"/>
+        <Label Content="Keymap" VerticalAlignment="Top" Margin="770,115,22,0" Width="154" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <Label Content="Text:" HorizontalAlignment="Left" Margin="729,181,0,0" VerticalAlignment="Top"/>
+        <Label Content="Type:" HorizontalAlignment="Left" Margin="726,228,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CbKeymapType" HorizontalAlignment="Left" Margin="798,228,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding KeymapTypes}" SelectedItem="{Binding SelectedKeymapType, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbKeymapType_SelectionChanged"/>
+        <TextBox x:Name="TxtKeymapText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="798,181,0,0" Text="{Binding KeymapText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TxtKeymapText_TextChanged" />
+        <Label Content="Ref. Layer:" HorizontalAlignment="Left" Margin="729,268,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CbRefLayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="798,272,0,0" ItemsSource="{Binding AvailableRefLayers}" SelectedItem="{Binding SelectedRefLayer, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CbRefLayer_SelectionChanged"/>
+        <Menu HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="944" Margin="2,0,0,0">
             <MenuItem Header="File">
                 <MenuItem Header="Import" Click="BtnImportKeymap_Click"/>
                 <MenuItem Header="Save" Click="BtnSave_Click"/>
             </MenuItem>
-            <MenuItem Header="Layer">
-                <MenuItem Header="Add Layer"/>
-                <Separator></Separator>
-            </MenuItem>
+            <MenuItem Header="Add Layer" Click="AddLayer_Click"/>
+            <MenuItem Header="Select Layer" ItemsSource="{Binding AvailableLayersMenu, UpdateSourceTrigger=PropertyChanged}"/>
         </Menu>
+
+        <Grid x:Name="AddLayerInputBox" Visibility="Collapsed" Margin="0,0,0,0">
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border
+            MinWidth="250"
+            Background="DodgerBlue" 
+            BorderBrush="Black" 
+            BorderThickness="1" 
+            CornerRadius="0,55,0,55" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Margin="5" Text="Layer Name:" FontWeight="Bold" FontFamily="Cambria" />
+                    <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="AddLayerTextBox"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="YesButton" Margin="5" Content="OK" Background="{x:Null}" Click="AddLayerOk_Click"/>
+                        <Button x:Name="NoButton" Margin="5" Content="Cancel" Background="{x:Null}" Click="AddLayerCancel_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

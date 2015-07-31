@@ -15,8 +15,7 @@ namespace KeymapGenerator.ViewModels
 {
     public class ViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<ComboBoxItem> AvailableLayers { get; set; }
-        public ComboBoxItem SelectedLayer { get; set; }
+        public ObservableCollection<MenuItem> AvailableLayersMenu { get; set; }
         public List<string> KeymapTypes { get; set; }
         public ObservableCollection<string> AvailableRefLayers { get; set; } 
 
@@ -72,19 +71,19 @@ namespace KeymapGenerator.ViewModels
         private Keymap _selectedKeymap;
         private string _workingFile;
 
-        public ViewModel()
+        private readonly Action<object, RoutedEventArgs> _selectedLayerClick;
+
+        public ViewModel(Action<object, RoutedEventArgs> selectedLayerClick)
         {
             _keymapLayers = new List<KeymapLayer>();
             _keymapLayerController = new KeymapLayerController();
-            AvailableLayers = new ObservableCollection<ComboBoxItem>();
             AvailableRefLayers = new ObservableCollection<string>();
-
-            var cbItem = new ComboBoxItem { Content = "<--Select-->" };
-            SelectedLayer = cbItem;
-            AvailableLayers.Add(cbItem);
+            AvailableLayersMenu = new ObservableCollection<MenuItem>();
 
             var keymapTypes = Enum.GetNames(typeof(KeymapType)).ToList();
             KeymapTypes = keymapTypes;
+
+            _selectedLayerClick = selectedLayerClick;
         }
 
         public void ImportKeymapFile(string file)
@@ -93,8 +92,11 @@ namespace KeymapGenerator.ViewModels
             var keymapFileReader = new KeymapFileReader();
             _keymapLayers = keymapFileReader.ParseLayers(file);
 
-            foreach (var layer in _keymapLayers) {
-                AvailableLayers.Add(new ComboBoxItem { Content = layer.LayerName });
+            foreach (var layer in _keymapLayers)
+            {
+                var menuItem = new MenuItem {Header = layer.LayerName};
+                menuItem.Click += new RoutedEventHandler(_selectedLayerClick);
+                AvailableLayersMenu.Add(menuItem);
                 _keymapLayerController.PopulateKeymapLayer(layer);
             }
         }
@@ -105,9 +107,9 @@ namespace KeymapGenerator.ViewModels
             keymapFileWriter.Write(_keymapLayers, _workingFile);
         }
 
-        public KeymapLayer GetKeymapLayer()
+        public KeymapLayer GetKeymapLayer(string layerName)
         {
-            _currentKeymapLayer = _keymapLayers.FirstOrDefault(kl => kl.LayerName == SelectedLayer.Content.ToString());
+            _currentKeymapLayer = _keymapLayers.FirstOrDefault(kl => kl.LayerName == layerName);
 
             if (_currentKeymapLayer != null)
             {
@@ -143,7 +145,10 @@ namespace KeymapGenerator.ViewModels
 
             var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, _addLayerName);
             _keymapLayerController.PopulateKeymapLayer(keymapLayer);
-            AvailableLayers.Add(new ComboBoxItem { Content = _addLayerName });
+
+            var menuItem = new MenuItem { Header = _addLayerName };
+            menuItem.Click += new RoutedEventHandler(_selectedLayerClick);
+            AvailableLayersMenu.Add(menuItem);
 
             _keymapLayers.Add(keymapLayer);
         }

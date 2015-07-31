@@ -14,28 +14,48 @@ namespace KeymapGenerator.Views
         public MainWindow()
         {
             InitializeComponent();
-            _viewModel = new ViewModel();
+            _viewModel = new ViewModel(SelectedLayer_Click());
             DataContext = _viewModel;
             CbRefLayer.IsEnabled = false;
         }
 
-        private void CbKeymapLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private Action<object, RoutedEventArgs> SelectedLayer_Click()
         {
-            var keymapLayer = _viewModel.GetKeymapLayer();
+            return (sender, e) =>
+            {
+                var menuItem = (MenuItem) sender;
+                var keymapLayer = _viewModel.GetKeymapLayer(menuItem.Header.ToString());
 
-            _viewModel.ResetKeymap();
-            _viewModel.SetAvailableRefLayers();
+                _viewModel.ResetKeymap();
+                _viewModel.SetAvailableRefLayers();
 
-            KeymapContainer.Children.Clear();
-            if (keymapLayer == null) return;
+                KeymapContainer.Children.Clear();
+                if (keymapLayer == null) return;
 
-            KeymapContainer.Children.Add(keymapLayer.KeymapGrid);
+                KeymapContainer.Children.Add(keymapLayer.KeymapGrid);
+            };
         }
 
         private void AddLayer_Click(object sender, RoutedEventArgs e)
         {
+            AddLayerInputBox.Visibility = Visibility.Visible;
+        }
+
+        private void AddLayerOk_Click(object sender, RoutedEventArgs e)
+        {
+            AddLayerInputBox.Visibility = Visibility.Collapsed;
+
+            var layerName = AddLayerTextBox.Text;
+            _viewModel.AddLayerName = layerName;
             _viewModel.AddLayer();
-            TxtAddLayer.Clear();
+
+            AddLayerTextBox.Text = string.Empty;
+        }
+
+        private void AddLayerCancel_Click(object sender, RoutedEventArgs e)
+        {
+            AddLayerInputBox.Visibility = Visibility.Collapsed;
+            AddLayerTextBox.Text = string.Empty;
         }
 
         private void TxtKeymapText_TextChanged(object sender, TextChangedEventArgs e)
