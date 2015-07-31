@@ -38,6 +38,7 @@ namespace KeymapGenerator.Views
 
         private void AddLayer_Click(object sender, RoutedEventArgs e)
         {
+            _viewModel.LayerAction = LayerAction.Add;
             AddLayerInputBox.Visibility = Visibility.Visible;
         }
 
@@ -46,8 +47,7 @@ namespace KeymapGenerator.Views
             AddLayerInputBox.Visibility = Visibility.Collapsed;
 
             var layerName = AddLayerTextBox.Text;
-            _viewModel.AddLayerName = layerName;
-            _viewModel.AddLayer();
+            _viewModel.TriggerLayerAction(layerName);
 
             AddLayerTextBox.Text = string.Empty;
         }
@@ -56,6 +56,17 @@ namespace KeymapGenerator.Views
         {
             AddLayerInputBox.Visibility = Visibility.Collapsed;
             AddLayerTextBox.Text = string.Empty;
+        }
+
+        private void DeleteLayer_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.LayerAction = LayerAction.Delete;
+            AddLayerInputBox.Visibility = Visibility.Visible;
+        }
+
+        private void RenameLayer_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void TxtKeymapText_TextChanged(object sender, TextChangedEventArgs e)

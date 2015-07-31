@@ -20,7 +20,11 @@
                 <MenuItem Header="Import" Click="BtnImportKeymap_Click"/>
                 <MenuItem Header="Save" Click="BtnSave_Click"/>
             </MenuItem>
-            <MenuItem Header="Add Layer" Click="AddLayer_Click"/>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Add Layer" Click="AddLayer_Click"/>
+                <MenuItem Header="Delete Layer" Click="DeleteLayer_Click"/>
+                <MenuItem Header="Rename Name" Click="RenameLayer_Click"/>
+            </MenuItem>
             <MenuItem Header="Select Layer" ItemsSource="{Binding AvailableLayersMenu, UpdateSourceTrigger=PropertyChanged}"/>
         </Menu>
 

@@ -15,6 +15,7 @@ namespace KeymapGenerator.ViewModels
 {
     public class ViewModel : INotifyPropertyChanged
     {
+        public LayerAction LayerAction { get; set; }
         public ObservableCollection<MenuItem> AvailableLayersMenu { get; set; }
         public List<string> KeymapTypes { get; set; }
         public ObservableCollection<string> AvailableRefLayers { get; set; } 
@@ -56,13 +57,6 @@ namespace KeymapGenerator.ViewModels
                 _keymapText = value;
                 OnPropertyChanged();
             }
-        }
-
-        private string _addLayerName;
-        public string AddLayerName
-        {
-            get { return _addLayerName; }
-            set { _addLayerName = value.Trim(); }
         }
 
         private readonly KeymapLayerController _keymapLayerController;
@@ -111,15 +105,18 @@ namespace KeymapGenerator.ViewModels
         {
             _currentKeymapLayer = _keymapLayers.FirstOrDefault(kl => kl.LayerName == layerName);
 
-            if (_currentKeymapLayer != null)
+            if (_currentKeymapLayer == null)
             {
-                var keymaps = _currentKeymapLayer.Keymaps;
-                for (var i = 0; i < keymaps.GetLength(0); i++)
+                MessageBox.Show(string.Format("No keymap layer bound to Layer Name '{0}'", layerName));
+                return null;
+            }
+
+            var keymaps = _currentKeymapLayer.Keymaps;
+            for (var i = 0; i < keymaps.GetLength(0); i++)
+            {
+                for (var j = 0; j < keymaps.GetLength(1); j++)
                 {
-                    for (var j = 0; j < keymaps.GetLength(1); j++)
-                    {
-                        keymaps[i, j].Button.Click += new RoutedEventHandler(KeymapButton_Click());
-                    }
+                    keymaps[i, j].Button.Click += new RoutedEventHandler(KeymapButton_Click());
                 }
             }
 
@@ -131,26 +128,57 @@ namespace KeymapGenerator.ViewModels
             return _selectedKeymap == null ? KeymapType.Keypress : _selectedKeymap.Action.Type;
         }
 
-        public void AddLayer()
+        public void TriggerLayerAction(string layerName)
         {
-            if (string.IsNullOrEmpty(_addLayerName)) {
+            switch (LayerAction)
+            {
+                case LayerAction.Add:
+                    AddLayer(layerName);
+                    break;
+                case LayerAction.Delete:
+                    DeleteLayer(layerName);
+                    break;
+                case LayerAction.Rename:
+                    break;
+            }
+        }
+
+        private void AddLayer(string layerName)
+        {
+            layerName = layerName.Trim();
+            if (string.IsNullOrEmpty(layerName)) {
                 MessageBox.Show("Invalid input");
                 return;
             }
 
-            if (_keymapLayers.Any(layer => layer.LayerName == _addLayerName)) {
-                MessageBox.Show(string.Format("A layer with the name '{0}' already exists.", _addLayerName));
+            if (_keymapLayers.Any(layer => layer.LayerName == layerName)) {
+                MessageBox.Show(string.Format("A layer with the name '{0}' already exists.", layerName));
                 return;
             }
 
-            var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, _addLayerName);
+            var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, layerName);
             _keymapLayerController.PopulateKeymapLayer(keymapLayer);
 
-            var menuItem = new MenuItem { Header = _addLayerName };
+            var menuItem = new MenuItem { Header = layerName };
             menuItem.Click += new RoutedEventHandler(_selectedLayerClick);
             AvailableLayersMenu.Add(menuItem);
 
             _keymapLayers.Add(keymapLayer);
+        }
+
+        private void DeleteLayer(string layerName)
+        {
+            layerName = layerName.Trim();
+            var layer = _keymapLayers.FirstOrDefault(x => x.LayerName == layerName);
+            if (layer == null)
+            {
+                MessageBox.Show(string.Format("Error: No layer found by the name '{0}'", layerName));
+                return;
+            }
+
+            var menuItem = AvailableLayersMenu.First(x => (string) x.Header == layerName);
+            AvailableLayersMenu.Remove(menuItem);
+            _keymapLayers.Remove(layer);
         }
 
         public void UpdateKeymapType()
