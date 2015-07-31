@@ -15,6 +15,7 @@ namespace KeymapGenerator.Models
             set
             {
                 _keypress = value;
+                if (_keypress == null) return;
 
                 var regex = new Regex(@"(?<=\().+?(?=\))");
                 if (regex.IsMatch(_keypress))
