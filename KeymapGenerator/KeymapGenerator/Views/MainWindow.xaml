@@ -7,6 +7,7 @@
 
     <Grid>
         <Grid x:Name="KeymapContainer" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="639" Margin="25,115,0,0"/>
+        <Label x:Name="lblLayerName" Content="{Binding CurrentLayerName, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="37" Margin="25,49,0,0" VerticalAlignment="Top" Width="162" FontSize="20"/>
         <GridSplitter HorizontalAlignment="Left" Height="483" Margin="696,0,0,-1" VerticalAlignment="Top" Width="5"/>
         <Label Content="Keymap" VerticalAlignment="Top" Margin="770,115,22,0" Width="154" FontSize="20" HorizontalAlignment="Center" FontWeight="Bold"/>
         <Label Content="Text:" HorizontalAlignment="Left" Margin="729,181,0,0" VerticalAlignment="Top"/>

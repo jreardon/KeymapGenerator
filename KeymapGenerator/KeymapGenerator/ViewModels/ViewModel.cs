@@ -46,6 +46,19 @@ namespace KeymapGenerator.ViewModels
             }
         }
 
+        private string _currentLayerName;
+        public string CurrentLayerName
+        {
+            get { return _currentLayerName; }
+            set
+            {
+                if (value == _currentLayerName) return;
+
+                _currentLayerName = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _keymapText;
         public string KeymapText
         {
@@ -152,6 +165,7 @@ namespace KeymapGenerator.ViewModels
             }
 
             var keymapLayer = _keymapLayerController.GetNewLayer(4, 12, layerName);
+            keymapLayer.LayerNumber = _keymapLayers.Count();
             _keymapLayerController.PopulateKeymapLayer(keymapLayer);
 
             var menuItem = new MenuItem { Header = layerName };
@@ -177,6 +191,7 @@ namespace KeymapGenerator.ViewModels
 
             AvailableLayersMenu.First(x => (string) x.Header == _currentKeymapLayer.LayerName).Header = layerName;
             _currentKeymapLayer.LayerName = layerName;
+            CurrentLayerName = layerName;
         }
 
         public void DeleteLayer()
@@ -191,6 +206,7 @@ namespace KeymapGenerator.ViewModels
             AvailableLayersMenu.Remove(menuItem);
             _keymapLayers.Remove(_currentKeymapLayer);
             _currentKeymapLayer = null;
+            CurrentLayerName = string.Empty;
         }
 
         public void UpdateKeymapType()
@@ -217,6 +233,7 @@ namespace KeymapGenerator.ViewModels
             if (_selectedKeymap == null || string.IsNullOrEmpty(SelectedRefLayer)) return;
 
             _selectedKeymap.Action.ReferenceLayer = SelectedRefLayer;
+            _selectedKeymap.UpdateDisplayText();
 
             var referenceLayer = _keymapLayers.First(k => k.LayerName == SelectedRefLayer);
             _selectedKeymap.Action.RefLayerNumber = referenceLayer.LayerNumber;

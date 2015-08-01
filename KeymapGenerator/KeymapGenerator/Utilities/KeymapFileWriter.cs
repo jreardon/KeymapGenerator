@@ -47,11 +47,22 @@ namespace KeymapGenerator.Utilities
 
             // add Actions
             fileLines.Add("const uint16_t PROGMEM fn_actions[] = {");
-            const string actionLine = "[{0}] = {1}({2}),";
-            fileLines.AddRange(from action in GetActions(keymapLayers)
-                let actionMethod =
-                    action.Type == KeymapType.MomentaryLayer ? "ACTION_LAYER_MOMENTARY" : "ACTION_DEFAULT_LAYER_SET"
-                select string.Format(actionLine, action.Number, actionMethod, action.RefLayerNumber));
+            const string actionLine = "[{0}] = {1}({2}), // to {3}";
+            var keymapActions = GetActions(keymapLayers).ToList();
+            for (var i = 1; i <= keymapActions.Count(); i++) // write them in order
+            {
+                var action = keymapActions.First(x => x.Number == i);
+                var actionMethod = action.Type == KeymapType.MomentaryLayer
+                    ? "ACTION_LAYER_MOMENTARY"
+                    : "ACTION_DEFAULT_LAYER_SET";
+                var line = string.Format(actionLine, action.Number, actionMethod, action.RefLayerNumber, action.ReferenceLayer);
+
+                // remove the comma on the last line
+                if (i == keymapActions.Count)
+                    line = line.Replace(",", "");
+
+                fileLines.Add(line);
+            }
             fileLines.Add("};");
 
             fileLines.AddRange(GetMacroLines());

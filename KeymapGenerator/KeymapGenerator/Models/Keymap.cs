@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using KeymapGenerator.Data;
 
@@ -15,19 +16,7 @@ namespace KeymapGenerator.Models
             set
             {
                 _keypress = value;
-                if (_keypress == null) return;
-
-                var regex = new Regex(@"(?<=\().+?(?=\))");
-                if (regex.IsMatch(_keypress))
-                {
-                    var keypress = regex.Match(_keypress).Value;
-                    DisplayText = TmkKeymappings.GetDisplayText(keypress)[1] == string.Empty
-                        ? _keypress
-                        : TmkKeymappings.GetDisplayText(keypress)[1];
-                    return;
-                }
-
-                DisplayText = TmkKeymappings.GetDisplayText(_keypress)[0];
+                UpdateDisplayText();
             }
         }
 
@@ -58,6 +47,24 @@ namespace KeymapGenerator.Models
             Row = row;
             Col = col;
             Action = new Action();
+        }
+
+        public void UpdateDisplayText()
+        {
+            if (_keypress == null) return;
+
+            var regex = new Regex(@"(?<=\().+?(?=\))");
+            if (regex.IsMatch(_keypress)) {
+                var keypress = regex.Match(_keypress).Value;
+                DisplayText = Action.ReferenceLayer == string.Empty
+                    ? _keypress
+                    : Action.ReferenceLayer;
+
+                Action.Number = Convert.ToInt32(keypress);
+                return;
+            }
+
+            DisplayText = TmkKeymappings.GetDisplayText(_keypress)[0];
         }
     }
 }

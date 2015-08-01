@@ -33,6 +33,8 @@ namespace KeymapGenerator.Views
                 if (keymapLayer == null) return;
 
                 KeymapContainer.Children.Add(keymapLayer.KeymapGrid);
+
+                _viewModel.CurrentLayerName = keymapLayer.LayerName;
             };
         }
 

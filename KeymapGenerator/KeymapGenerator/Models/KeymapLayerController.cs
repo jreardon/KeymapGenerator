@@ -23,12 +23,17 @@ namespace KeymapGenerator.Models
         {
             keymapLayer.KeymapGrid = KeymapGrid.GetNewKeymapGrid(keymapLayer.NumberRows, keymapLayer.NumberCols, keymapLayer.Keymaps);
 
-            for (var i = 0; i < keymapLayer.NumberRows; i++) {
-                for (var j = 0; j < keymapLayer.NumberCols; j++) {
-                    var button = keymapLayer.Keymaps[i, j].Button;
+            for (var i = 0; i < keymapLayer.NumberRows; i++) 
+            {
+                for (var j = 0; j < keymapLayer.NumberCols; j++)
+                {
+                    var keymap = keymapLayer.Keymaps[i, j];
+                    keymap.UpdateDisplayText();
+
+                    var button = keymap.Button;
                     button.FontSize = 10;
                     button.HorizontalContentAlignment = HorizontalAlignment.Center;
-                    button.Content = keymapLayer.Keymaps[i, j].DisplayText;
+                    button.Content = keymap.DisplayText;
                 }
             }
         }
@@ -37,8 +42,10 @@ namespace KeymapGenerator.Models
         {
             var keymaps = new Keymap[numRows, numCols];
 
-            for (var i = 0; i < numRows; i++) {
-                for (var j = 0; j < numCols; j++) {
+            for (var i = 0; i < numRows; i++) 
+            {
+                for (var j = 0; j < numCols; j++) 
+                {
                     keymaps[i, j] = new Keymap(i, j);
                 }
             }
